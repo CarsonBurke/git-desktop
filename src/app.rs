@@ -1,14 +1,30 @@
-use iced::{executor, widget::{column, container}, Application, Color, Command, Element, Subscription, Theme};
+use iced::{
+    executor, font,
+    widget::{column, container, row, scrollable},
+    Application, Color, Command, Element, Length, Subscription, Theme,
+};
 
-use crate::{sidebar::sidebar::{Sidebar, SidebarMessage}, theme::CustomThemeChoice};
+use crate::{
+    constants::spacings,
+    pages::page::{Page, PageMessage},
+    sidebar::sidebar::{Sidebar, SidebarMessage},
+    styles,
+    theme::CustomThemeChoice,
+    topbar::topbar::{Topbar, TopbarMessage},
+};
 
 #[derive(Debug)]
 pub enum AppMessage {
     SidebarMessage(SidebarMessage),
+    TopbarMessage(TopbarMessage),
+    PageMessage(PageMessage),
+    FontLoaded(Result<(), font::Error>),
 }
 
 pub struct App {
     sidebar: Sidebar,
+    topbar: Topbar,
+    page: Page,
 }
 
 impl Application for App {
@@ -18,10 +34,16 @@ impl Application for App {
     type Flags = ();
 
     fn new(_flags: ()) -> (Self, Command<AppMessage>) {
-
-        (Self {
-            sidebar: Sidebar::new(),
-        }, Command::none())
+        (
+            Self {
+                sidebar: Sidebar::new(),
+                topbar: Topbar::new(),
+                page: Page::new(),
+            },
+            Command::batch(vec![
+                font::load(iced_aw::BOOTSTRAP_FONT_BYTES).map(AppMessage::FontLoaded)
+            ]),
+        )
     }
 
     fn title(&self) -> String {
@@ -29,27 +51,59 @@ impl Application for App {
     }
 
     fn update(&mut self, message: AppMessage) -> Command<AppMessage> {
-
         match message {
             AppMessage::SidebarMessage(sidebar_message) => {
                 println!("sidebar message {:?}", sidebar_message);
+            }
+            AppMessage::TopbarMessage(topbar_message) => {
+                println!("topbar message {:?}", topbar_message);
+            }
+            AppMessage::PageMessage(page_message) => {
+                print!("page message {:?}", page_message)
+            }
+            AppMessage::FontLoaded(status) => {
+                println!("font loaded {:?}", status)
             }
         }
 
         Command::none()
     }
 
-/*     fn subscription(&self) -> Subscription<AppMessage> {
-        
+    /*     fn subscription(&self) -> Subscription<AppMessage> {
+
     } */
 
     fn view(&self) -> Element<AppMessage> {
+        let left = column![self
+            .sidebar
+            .view()
+            .map(move |message| { AppMessage::SidebarMessage(message) })];
 
-        let main = container(column![]);
+        let main_content = container(
+            container(
+                self.page
+                    .view()
+                    .map(move |message| AppMessage::PageMessage(message)),
+            )
+            .style(styles::container::test_background_2())
+            .width(Length::Fill), // .height(Length::Fill),
+        )
+        .padding(spacings::MEDIUM)
+        .width(Length::Fill)
+        .style(styles::container::main_content());
+        let main = scrollable(main_content).style(iced::theme::Scrollable::Custom(Box::new(
+            styles::scrollable::Background1,
+        )));
+        let right = column![
+            self.topbar
+                .view()
+                .map(move |message| { AppMessage::TopbarMessage(message) }),
+            main
+        ];
 
-        let container = container(column![self.sidebar.view().map(move |message| {
-            AppMessage::SidebarMessage(message)
-        }), main]);
+        let content = row![left, right];
+
+        let container = container(content);
         container.into()
     }
 

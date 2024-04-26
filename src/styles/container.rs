@@ -23,6 +23,13 @@ pub fn main_content() -> widget::container::Appearance {
     }
 }
 
+pub fn topbar() -> widget::container::Appearance {
+    widget::container::Appearance {
+        background: Some(Background::from(BACKGROUND_1)),
+        ..Default::default()
+    }
+}
+
 pub fn sidebar() -> widget::container::Appearance {
     widget::container::Appearance {
         background: Some(Background::from(BACKGROUND_3)),
@@ -73,6 +80,13 @@ pub fn alternate_process_grid_row() -> widget::container::Appearance {
 pub fn divider_background_1() -> widget::container::Appearance {
     widget::container::Appearance {
         background: Some(Background::from(BACKGROUND_1)),
+        ..Default::default()
+    }
+}
+
+pub fn test_background_2() -> widget::container::Appearance {
+    widget::container::Appearance {
+        background: Some(Background::from(BACKGROUND_2)),
         ..Default::default()
     }
 }

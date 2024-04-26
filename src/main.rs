@@ -8,6 +8,8 @@ mod app;
 mod constants;
 mod theme;
 mod general_widgets;
+mod styles;
+mod topbar;
 
 pub fn main() -> iced::Result{
 
@@ -20,6 +22,7 @@ pub fn main() -> iced::Result{
             // decorations: false,
             ..Default::default()
         },
+        antialiasing: true,
         ..Default::default()
     };
 
