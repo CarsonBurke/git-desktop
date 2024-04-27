@@ -6,7 +6,7 @@ use iced::{
 
 use crate::{
     constants::spacings,
-    pages::page::{Page, PageMessage},
+    pages::main::{Main, MainMessage},
     sidebar::sidebar::{Sidebar, SidebarMessage},
     styles,
     theme::CustomThemeChoice,
@@ -17,14 +17,14 @@ use crate::{
 pub enum AppMessage {
     SidebarMessage(SidebarMessage),
     TopbarMessage(TopbarMessage),
-    PageMessage(PageMessage),
+    MainMessage(MainMessage),
     FontLoaded(Result<(), font::Error>),
 }
 
 pub struct App {
     sidebar: Sidebar,
     topbar: Topbar,
-    page: Page,
+    main: Main,
 }
 
 impl Application for App {
@@ -38,7 +38,7 @@ impl Application for App {
             Self {
                 sidebar: Sidebar::new(),
                 topbar: Topbar::new(),
-                page: Page::new(),
+                main: Main::new(),
             },
             Command::batch(vec![
                 font::load(iced_aw::BOOTSTRAP_FONT_BYTES).map(AppMessage::FontLoaded)
@@ -58,7 +58,7 @@ impl Application for App {
             AppMessage::TopbarMessage(topbar_message) => {
                 println!("topbar message {:?}", topbar_message);
             }
-            AppMessage::PageMessage(page_message) => {
+            AppMessage::MainMessage(page_message) => {
                 print!("page message {:?}", page_message)
             }
             AppMessage::FontLoaded(status) => {
@@ -81,11 +81,12 @@ impl Application for App {
 
         let main_content = container(
             container(
-                self.page
+                self.main
                     .view()
-                    .map(move |message| AppMessage::PageMessage(message)),
+                    .map(move |message| AppMessage::MainMessage(message)),
             )
             .style(styles::container::test_background_2())
+            .padding(spacings::SMALL)
             .width(Length::Fill), // .height(Length::Fill),
         )
         .padding(spacings::MEDIUM)
@@ -93,7 +94,7 @@ impl Application for App {
         .style(styles::container::main_content());
         let main = scrollable(main_content).style(iced::theme::Scrollable::Custom(Box::new(
             styles::scrollable::Background1,
-        )));
+        )))        .height(Length::Fill);
         let right = column![
             self.topbar
                 .view()
