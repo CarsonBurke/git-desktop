@@ -80,14 +80,10 @@ impl Application for App {
             .map(move |message| { AppMessage::SidebarMessage(message) })];
 
         let main_content = container(
-            container(
                 self.main
                     .view()
                     .map(move |message| AppMessage::MainMessage(message)),
-            )
-            .style(styles::container::test_background_2())
-            .padding(spacings::SMALL)
-            .width(Length::Fill), // .height(Length::Fill),
+            
         )
         .padding(spacings::MEDIUM)
         .width(Length::Fill)

@@ -32,7 +32,7 @@ pub fn topbar() -> widget::container::Appearance {
 
 pub fn sidebar() -> widget::container::Appearance {
     widget::container::Appearance {
-        background: Some(Background::from(BACKGROUND_3)),
+        background: Some(Background::from(BACKGROUND_2)),
         ..Default::default()
     }
 }
@@ -87,6 +87,23 @@ pub fn divider_background_1() -> widget::container::Appearance {
 pub fn test_background_2() -> widget::container::Appearance {
     widget::container::Appearance {
         background: Some(Background::from(BACKGROUND_2)),
+        ..Default::default()
+    }
+}
+
+pub fn test_background_3() -> widget::container::Appearance {
+    widget::container::Appearance {
+        background: Some(Background::from(BACKGROUND_3)),
+        ..Default::default()
+    }
+}
+
+pub fn rounded_corners() -> widget::container::Appearance {
+    widget::container::Appearance {
+        border: Border {
+            radius: 8.0.into(),
+            ..Default::default()
+        },
         ..Default::default()
     }
 }
