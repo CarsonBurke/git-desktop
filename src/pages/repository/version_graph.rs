@@ -1,5 +1,5 @@
 use iced::{
-    widget::{column, container, row, text},
+    widget::{column, container, horizontal_space, row, text},
     Element, Length,
 };
 use iced_aw::BootstrapIcon;
@@ -25,7 +25,7 @@ impl VersionGraph {
 
     pub fn view(&self) -> Element<VersionGraphMessage> {
         let top = container(
-            row![bootstrap_icon(BootstrapIcon::Code), text("Branch name")]
+            row![bootstrap_icon(BootstrapIcon::Code), text("Branch name"), horizontal_space(), bootstrap_icon(BootstrapIcon::Sliders)]
                 .padding(spacings::SMALL)
                 .spacing(spacings::SMALL),
         )
