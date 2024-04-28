@@ -88,11 +88,63 @@ impl button::StyleSheet for Primary {
     }
 }
 
-pub struct Background3Blended {
+pub struct Background1 {
     pub display_as_pressed: bool,
 }
 
-impl button::StyleSheet for Background3Blended {
+impl button::StyleSheet for Background1 {
+    type Style = iced::Theme;
+
+    fn active(&self, style: &Self::Style) -> button::Appearance {
+        if self.display_as_pressed == true {
+            return self.pressed(style);
+        }
+
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_1)),
+            text_color: iced::Color::WHITE,
+            // shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    fn hovered(&self, _: &Self::Style) -> button::Appearance {
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_2)),
+            text_color: iced::Color::WHITE,
+            shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    fn pressed(&self, _: &Self::Style) -> button::Appearance {
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_3)),
+            text_color: iced::Color::WHITE,
+            shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+}
+
+
+pub struct Background3 {
+    pub display_as_pressed: bool,
+}
+
+impl button::StyleSheet for Background3 {
     type Style = iced::Theme;
 
     fn active(&self, style: &Self::Style) -> button::Appearance {
@@ -127,11 +179,62 @@ impl button::StyleSheet for Background3Blended {
 
     fn pressed(&self, _: &Self::Style) -> button::Appearance {
         button::Appearance {
-            background: Some(iced::Background::Color(custom_theme::BACKGROUND_2)),
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_5)),
             text_color: iced::Color::WHITE,
             shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
             border: iced::Border {
                 radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+}
+
+pub struct Background3Circle {
+    pub display_as_pressed: bool,
+}
+
+impl button::StyleSheet for Background3Circle {
+    type Style = iced::Theme;
+
+    fn active(&self, style: &Self::Style) -> button::Appearance {
+        if self.display_as_pressed == true {
+            return self.pressed(style);
+        }
+
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_3)),
+            text_color: iced::Color::WHITE,
+            // shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 1000.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    fn hovered(&self, _: &Self::Style) -> button::Appearance {
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_4)),
+            text_color: iced::Color::WHITE,
+            shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 1000.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    fn pressed(&self, _: &Self::Style) -> button::Appearance {
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_5)),
+            text_color: iced::Color::WHITE,
+            shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 1000.0.into(),
                 ..Default::default()
             },
             ..Default::default()

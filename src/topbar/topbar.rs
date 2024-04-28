@@ -1,6 +1,6 @@
 use iced::{
     theme,
-    widget::{column, container, horizontal_space, row, text},
+    widget::{button, column, container, horizontal_space, row, text},
     Alignment, Element,
 };
 use iced_aw::BootstrapIcon;
@@ -11,8 +11,14 @@ use crate::{
     styles,
 };
 
-#[derive(Debug)]
-pub enum TopbarMessage {}
+#[derive(Debug, Clone)]
+pub enum TopbarMessage {
+    OpenEditor,
+    OpenFolder,
+    OpenBrowser,
+    MinimizeWindow,
+    CloseWindow,
+}
 
 pub struct Topbar {}
 
@@ -61,17 +67,27 @@ impl Topbar {
             .align_items(Alignment::Center),
             // Shortform
             row![
-                bootstrap_icon(BootstrapIcon::Pencil),
-                bootstrap_icon(BootstrapIcon::Folder),
-                bootstrap_icon(BootstrapIcon::Globe),
+                button(bootstrap_icon(BootstrapIcon::Pencil)).on_press(TopbarMessage::OpenEditor).style(iced::theme::Button::Custom(Box::new(styles::button::Background1 {
+                    display_as_pressed: false,
+                }))),
+                button(bootstrap_icon(BootstrapIcon::Folder)).on_press(TopbarMessage::OpenFolder).style(iced::theme::Button::Custom(Box::new(styles::button::Background1 {
+                    display_as_pressed: false,
+                }))),
+                button(bootstrap_icon(BootstrapIcon::Globe)).on_press(TopbarMessage::OpenBrowser).style(iced::theme::Button::Custom(Box::new(styles::button::Background1 {
+                    display_as_pressed: false,
+                }))),
             ]
             .spacing(spacings::MEDIUM)
         ]
         .spacing(spacings::LARGE)
         .padding(spacings::SMALL).align_items(Alignment::Center);
         let right = row![
-            bootstrap_icon(BootstrapIcon::Dash),
-            bootstrap_icon(BootstrapIcon::X)
+            button(bootstrap_icon(BootstrapIcon::Dash)).on_press(TopbarMessage::MinimizeWindow).style(iced::theme::Button::Custom(Box::new(styles::button::Background3Circle {
+                display_as_pressed: false,
+            }))),
+            button(bootstrap_icon(BootstrapIcon::X)).on_press(TopbarMessage::CloseWindow).style(iced::theme::Button::Custom(Box::new(styles::button::Background3Circle {
+                display_as_pressed: false,
+            }))),
         ]
         .spacing(spacings::SMALL)
         .padding(spacings::SMALL);
