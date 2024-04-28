@@ -84,6 +84,13 @@ pub fn divider_background_1() -> widget::container::Appearance {
     }
 }
 
+pub fn divider_background_2() -> widget::container::Appearance {
+    widget::container::Appearance {
+        background: Some(Background::from(BACKGROUND_1)),
+        ..Default::default()
+    }
+}
+
 pub fn test_background_2() -> widget::container::Appearance {
     widget::container::Appearance {
         background: Some(Background::from(BACKGROUND_2)),

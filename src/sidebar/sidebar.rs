@@ -8,10 +8,12 @@ use crate::{
     constants::spacings, general_widgets::icons::bootstrap_icon, styles::container::sidebar,
 };
 
-use super::history_and_changes::HistoryAndChanges;
+use super::{changes::{Changes, ChangesMessage}, history_and_changes::HistoryAndChanges};
 
 #[derive(Debug)]
-pub enum SidebarMessage {}
+pub enum SidebarMessage {
+    TestMessage(ChangesMessage),
+}
 
 pub enum DisplayState {
     Visible,
@@ -31,6 +33,7 @@ pub struct SidebarChildren {
 pub struct Sidebar {
     // display_states: SidebarDisplayStates,
     children: SidebarChildren,
+    test_child: Changes,
 }
 
 impl Sidebar {
@@ -43,7 +46,8 @@ impl Sidebar {
             // },
             children: SidebarChildren {
                 history_and_changes: HistoryAndChanges::new(),
-            }
+            },
+            test_child: Changes::new(),
         }
     }
 
@@ -54,7 +58,9 @@ impl Sidebar {
             bootstrap_icon(BootstrapIcon::Gear),
         ];
 
-        let content = column![topbar];
+        let content = column![topbar, self.test_child.view().map(move |message| {
+            SidebarMessage::TestMessage(message)
+        })].spacing(spacings::MEDIUM);
         let container = container(content)
             .padding(spacings::SMALL)
             .height(Length::Fill)
