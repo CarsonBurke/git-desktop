@@ -13,7 +13,7 @@ use crate::{
     topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum AppMessage {
     SidebarMessage(SidebarMessage),
     TopbarMessage(TopbarMessage),
@@ -54,19 +54,37 @@ impl Application for App {
         match message {
             AppMessage::SidebarMessage(sidebar_message) => {
                 println!("sidebar message {:?}", sidebar_message);
+                Command::none()
             }
             AppMessage::TopbarMessage(topbar_message) => {
                 println!("topbar message {:?}", topbar_message);
+
+                let _ = self.topbar.update(topbar_message).map(AppMessage::TopbarMessage);
+
+                match topbar_message {
+                    TopbarMessage::CloseWindow => {
+
+                        Command::none()
+                    }
+                    TopbarMessage::MinimizeWindow => {
+
+                        Command::none()
+                    }
+                    _ => {
+                        println!("[app] unhandled topbar message");
+                        Command::none()
+                    }
+                }
             }
             AppMessage::MainMessage(page_message) => {
-                print!("page message {:?}", page_message)
+                print!("page message {:?}", page_message);
+                Command::none()
             }
             AppMessage::FontLoaded(status) => {
-                println!("font loaded {:?}", status)
+                println!("font loaded {:?}", status);
+                Command::none()
             }
         }
-
-        Command::none()
     }
 
     /*     fn subscription(&self) -> Subscription<AppMessage> {

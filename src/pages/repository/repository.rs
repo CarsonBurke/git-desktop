@@ -6,7 +6,7 @@ use crate::general_widgets::icons::bootstrap_icon;
 use super::version_graph::{VersionGraph, VersionGraphMessage};
 
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum RepositoryPageMessage {
     VersionGraphMessage(VersionGraphMessage)
 }

@@ -1,7 +1,5 @@
 use iced::{
-    theme,
-    widget::{button, column, container, horizontal_space, row, text},
-    Alignment, Element,
+    theme, widget::{button, column, container, horizontal_space, row, text}, Alignment, Command, Element
 };
 use iced_aw::BootstrapIcon;
 
@@ -19,7 +17,7 @@ pub enum TopbarGitAction {
     Push,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub enum TopbarMessage {
     ToggleRepositoryActions,
     ToggleBranchActions,
@@ -41,7 +39,29 @@ pub struct Topbar {
 impl Topbar {
     pub fn new() -> Self {
         Self {
-            repository_actions: Some(RepositoryActions::new()),
+            repository_actions: Self::create_repository_actions(),
+        }
+    }
+
+    fn create_repository_actions() -> Option<RepositoryActions> {
+        Some(RepositoryActions::new())
+    }
+
+
+    pub fn update(&mut self, message: TopbarMessage) -> Command<TopbarMessage> {
+        match message {
+            TopbarMessage::ToggleRepositoryActions => {
+                if self.repository_actions.is_some() {
+                    self.repository_actions = None;
+                    Command::none()
+                } else {
+                    self.repository_actions = Self::create_repository_actions();
+                    Command::none()
+                }
+            }
+            _ => {
+                Command::none()
+            }
         }
     }
 
@@ -69,7 +89,7 @@ impl Topbar {
             .on_press(TopbarMessage::ToggleRepositoryActions)
             .style(iced::theme::Button::Custom(Box::new(
                 styles::button::Background1 {
-                    display_as_pressed: false,
+                    display_as_pressed: self.repository_actions.is_some(),
                 }
             ))),
             match &self.repository_actions {

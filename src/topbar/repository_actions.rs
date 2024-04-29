@@ -1,7 +1,7 @@
 use iced::{
     alignment,
     widget::{column, container, row, text, text_input},
-    Alignment, Element,
+    Alignment, Element, Length,
 };
 use iced_aw::BootstrapIcon;
 
@@ -14,7 +14,7 @@ use crate::{
     styles,
 };
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub enum RepositoryActionsMessage {}
 
 pub struct RepositoryActions {}
@@ -26,70 +26,74 @@ impl RepositoryActions {
 
     pub fn view(&self) -> Element<RepositoryActionsMessage> {
         let content = column![
-            container(
-                row![
-                    bootstrap_icon(BootstrapIcon::Search),
-                    text_input("Search", "")
-                ]
-                .spacing(spacings::SMALL)
-            )
-            .align_y(alignment::Vertical::Center),
-            row![bootstrap_icon(BootstrapIcon::Clock), text("Recent")].spacing(spacings::SMALL),
+            row![
+                bootstrap_icon(BootstrapIcon::Search),
+                text_input("Search", "").width(Length::Fill)
+            ]
+            .spacing(spacings::SMALL)
+            .align_items(Alignment::Center),
             column![
-                container(
-                    row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                        .spacing(spacings::SMALL)
-                )
-                .style(styles::container::test_background_2())
-                .padding(spacings::SMALL),
-                seperator_background_1(),
-                container(
-                    row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                        .spacing(spacings::SMALL)
-                )
-                .style(styles::container::test_background_2())
-                .padding(spacings::SMALL),
-                seperator_background_1(),
-                container(
-                    row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                        .spacing(spacings::SMALL)
-                )
-                .style(styles::container::test_background_2())
-                .padding(spacings::SMALL),
-            ],
-            row![bootstrap_icon(BootstrapIcon::Person), text("Carson Burke")]
-                .spacing(spacings::SMALL),
+                row![bootstrap_icon(BootstrapIcon::Clock), text("Recent")].spacing(spacings::SMALL),
+                column![
+                    container(
+                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
+                            .spacing(spacings::SMALL)
+                    )
+                    .style(styles::container::test_background_2())
+                    .padding(spacings::SMALL),
+                    seperator_background_1(),
+                    container(
+                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
+                            .spacing(spacings::SMALL)
+                    )
+                    .style(styles::container::test_background_2())
+                    .padding(spacings::SMALL),
+                    seperator_background_1(),
+                    container(
+                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
+                            .spacing(spacings::SMALL)
+                    )
+                    .style(styles::container::test_background_2())
+                    .padding(spacings::SMALL),
+                ],
+            ]
+            .spacing(spacings::SMALL),
             column![
-                container(
-                    row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                        .spacing(spacings::SMALL)
-                )
-                .style(styles::container::test_background_2())
-                .padding(spacings::SMALL),
-                seperator_background_1(),
-                container(
-                    row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                        .spacing(spacings::SMALL)
-                )
-                .style(styles::container::test_background_2())
-                .padding(spacings::SMALL),
-                seperator_background_1(),
-                container(
-                    row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                        .spacing(spacings::SMALL)
-                )
-                .style(styles::container::test_background_2())
-                .padding(spacings::SMALL),
-                seperator_background_1(),
-                container(
-                    row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                        .spacing(spacings::SMALL)
-                )
-                .style(styles::container::test_background_2())
-                .padding(spacings::SMALL),
-            ],
+                row![bootstrap_icon(BootstrapIcon::Person), text("Carson Burke")]
+                    .spacing(spacings::SMALL),
+                column![
+                    container(
+                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
+                            .spacing(spacings::SMALL)
+                    )
+                    .style(styles::container::test_background_2())
+                    .padding(spacings::SMALL),
+                    seperator_background_1(),
+                    container(
+                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
+                            .spacing(spacings::SMALL)
+                    )
+                    .style(styles::container::test_background_2())
+                    .padding(spacings::SMALL),
+                    seperator_background_1(),
+                    container(
+                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
+                            .spacing(spacings::SMALL)
+                    )
+                    .style(styles::container::test_background_2())
+                    .padding(spacings::SMALL),
+                    seperator_background_1(),
+                    container(
+                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
+                            .spacing(spacings::SMALL)
+                    )
+                    .style(styles::container::test_background_2())
+                    .padding(spacings::SMALL),
+                ],
+            ]
+            .spacing(spacings::SMALL)
         ]
-        .spacing(spacings::SMALL)
+        .spacing(spacings::MEDIUM)
         .padding(spacings::SMALL);
         let container = container(content);
         container.into()

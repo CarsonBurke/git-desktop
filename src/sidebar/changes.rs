@@ -14,7 +14,7 @@ use crate::{
 
 use super::sidebar::DisplayState;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum ChangesMessage {}
 
 pub struct Changes {
@@ -30,9 +30,9 @@ impl Changes {
 
     pub fn view(&self) -> Element<ChangesMessage> {
         let content = container(column![
-            container(row![text("6"), text("Changes"), horizontal_space(), bootstrap_icon(BootstrapIcon::ChevronDown)]
+            row![text("6"), text("Changes"), horizontal_space(), bootstrap_icon(BootstrapIcon::ChevronDown)]
                 .spacing(spacings::SMALL)
-                .padding(spacings::SMALL)).style(changes_header()).width(Length::Fill),
+                .padding(spacings::SMALL).width(Length::Fill),
             seperator_background_2(),
             row![bootstrap_icon(BootstrapIcon::Code), text("File name")]
                 .spacing(spacings::SMALL)

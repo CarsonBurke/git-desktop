@@ -13,7 +13,7 @@ use crate::{
     },
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum VersionGraphMessage {}
 
 pub struct VersionGraph {}
