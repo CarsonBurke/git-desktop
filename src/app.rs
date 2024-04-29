@@ -71,7 +71,6 @@ impl Application for App {
                         Command::none()
                     }
                     _ => {
-                        println!("[app] unhandled topbar message");
                         Command::none()
                     }
                 }
