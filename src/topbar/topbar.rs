@@ -11,6 +11,8 @@ use crate::{
     styles,
 };
 
+use super::repository_actions::{RepositoryActions, RepositoryActionsMessage};
+
 pub enum TopbarGitAction {
     Fetch,
     Pull,
@@ -19,8 +21,8 @@ pub enum TopbarGitAction {
 
 #[derive(Debug, Clone)]
 pub enum TopbarMessage {
-    RepositoryActions,
-    BranchActions,
+    ToggleRepositoryActions,
+    ToggleBranchActions,
     Fetch,
     Pull,
     Push,
@@ -29,19 +31,24 @@ pub enum TopbarMessage {
     OpenBrowser,
     MinimizeWindow,
     CloseWindow,
+    RepositoryActionsMessage(RepositoryActionsMessage)
 }
 
-pub struct Topbar {}
+pub struct Topbar {
+    repository_actions: Option<RepositoryActions>,
+}
 
 impl Topbar {
     pub fn new() -> Self {
-        Self {}
+        Self {
+            repository_actions: Some(RepositoryActions::new()),
+        }
     }
 
     pub fn view(&self, git_action: TopbarGitAction) -> Element<TopbarMessage> {
         let left = row![
             // Repository name
-            button(
+            column![button(
                 row![
                     row![
                         bootstrap_icon(BootstrapIcon::Book),
@@ -59,12 +66,23 @@ impl Topbar {
                 .spacing(spacings::MEDIUM)
                 .align_items(Alignment::Center),
             )
-            .on_press(TopbarMessage::RepositoryActions)
+            .on_press(TopbarMessage::ToggleRepositoryActions)
             .style(iced::theme::Button::Custom(Box::new(
                 styles::button::Background1 {
                     display_as_pressed: false,
                 }
             ))),
+            match &self.repository_actions {
+                Some(repository_actions) => {
+                    repository_actions.view().map(move |message| {
+                        TopbarMessage::RepositoryActionsMessage(message)
+                    })
+                }
+                None => {
+                    text("none").into()
+                }
+            }
+            ],
             // Branch name
             button(
                 row![
@@ -84,7 +102,7 @@ impl Topbar {
                 .spacing(spacings::MEDIUM)
                 .align_items(Alignment::Center),
             )
-            .on_press(TopbarMessage::BranchActions)
+            .on_press(TopbarMessage::ToggleBranchActions)
             .style(iced::theme::Button::Custom(Box::new(
                 styles::button::Background1 {
                     display_as_pressed: false,
