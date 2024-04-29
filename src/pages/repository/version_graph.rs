@@ -35,7 +35,8 @@ impl VersionGraph {
         let main = container(row!["content"])
             .style(test_background_2())
             .padding(spacings::SMALL)
-            .width(Length::Fill);
+            .width(Length::Fill)
+            .height(Length::Fixed(1000.));
 
         let content = column![top, main,];
         let container = container(content).style(rounded_corners());

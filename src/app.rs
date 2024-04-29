@@ -10,7 +10,7 @@ use crate::{
     sidebar::sidebar::{Sidebar, SidebarMessage},
     styles,
     theme::CustomThemeChoice,
-    topbar::topbar::{Topbar, TopbarMessage},
+    topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage},
 };
 
 #[derive(Debug)]
@@ -93,7 +93,7 @@ impl Application for App {
         )))        .height(Length::Fill);
         let right = column![
             self.topbar
-                .view()
+                .view(TopbarGitAction::Fetch)
                 .map(move |message| { AppMessage::TopbarMessage(message) }),
             main
         ];
