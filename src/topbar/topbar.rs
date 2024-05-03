@@ -27,8 +27,6 @@ pub enum TopbarMessage {
     OpenEditor,
     OpenFolder,
     OpenBrowser,
-    MinimizeWindow,
-    CloseWindow,
     RepositoryActionsMessage(RepositoryActionsMessage)
 }
 
@@ -203,20 +201,7 @@ impl Topbar {
         .padding(spacings::SMALL)
         .align_items(Alignment::Center);
         let right = row![
-            button(bootstrap_icon(BootstrapIcon::Dash))
-                .on_press(TopbarMessage::MinimizeWindow)
-                .style(iced::theme::Button::Custom(Box::new(
-                    styles::button::Background3Circle {
-                        display_as_pressed: false,
-                    }
-                ))),
-            button(bootstrap_icon(BootstrapIcon::X))
-                .on_press(TopbarMessage::CloseWindow)
-                .style(iced::theme::Button::Custom(Box::new(
-                    styles::button::Background3Circle {
-                        display_as_pressed: false,
-                    }
-                ))),
+            
         ]
         .spacing(spacings::SMALL)
         .padding(spacings::SMALL);

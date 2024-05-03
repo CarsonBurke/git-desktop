@@ -62,14 +62,6 @@ impl Application for App {
                 let _ = self.topbar.update(topbar_message).map(AppMessage::TopbarMessage);
 
                 match topbar_message {
-                    TopbarMessage::CloseWindow => {
-
-                        Command::none()
-                    }
-                    TopbarMessage::MinimizeWindow => {
-
-                        Command::none()
-                    }
                     _ => {
                         Command::none()
                     }
