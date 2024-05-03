@@ -11,7 +11,7 @@ mod general_widgets;
 mod styles;
 mod topbar;
 
-pub fn main() -> iced::Result{
+pub fn main() -> iced::Result {
 
     let icon = iced::window::icon::from_file_data(ICON, Some(ImageFormat::Png)).unwrap();
 

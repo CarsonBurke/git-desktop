@@ -114,3 +114,14 @@ pub fn rounded_corners() -> widget::container::Appearance {
         ..Default::default()
     }
 }
+
+pub fn background2_rounded() -> widget::container::Appearance {
+    widget::container::Appearance {
+        background: Some(Background::from(BACKGROUND_2)),
+        border: Border {
+            radius: 8.0.into(),
+            ..Default::default()
+        },
+        ..Default::default()
+    }
+}
