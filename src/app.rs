@@ -3,6 +3,7 @@ use iced::{
     widget::{column, container, row, scrollable},
     Application, Color, Command, Element, Length, Subscription, Theme,
 };
+use iced_aw::split;
 
 use crate::{
     constants::spacings,
@@ -19,12 +20,14 @@ pub enum AppMessage {
     TopbarMessage(TopbarMessage),
     MainMessage(MainMessage),
     FontLoaded(Result<(), font::Error>),
+    DividerDragTo(u16),
 }
 
 pub struct App {
     sidebar: Sidebar,
     topbar: Topbar,
     main: Main,
+    divider_position: Option<u16>,
 }
 
 impl Application for App {
@@ -39,6 +42,7 @@ impl Application for App {
                 sidebar: Sidebar::new(),
                 topbar: Topbar::new(),
                 main: Main::new(),
+                divider_position: Some(200),
             },
             Command::batch(vec![
                 font::load(iced_aw::BOOTSTRAP_FONT_BYTES).map(AppMessage::FontLoaded)
@@ -75,6 +79,11 @@ impl Application for App {
                 println!("font loaded {:?}", status);
                 Command::none()
             }
+            AppMessage::DividerDragTo(drag_position) => {
+                println!("split moved {:?}", drag_position);
+                self.divider_position = Some(drag_position);
+                Command::none()
+            }
         }
     }
 
@@ -107,7 +116,8 @@ impl Application for App {
             main
         ];
 
-        let content = row![left, right];
+        let content = split::Split::new(left, right, self.divider_position, split::Axis::Vertical, AppMessage::DividerDragTo);
+        
 
         let container = container(content);
         container.into()
