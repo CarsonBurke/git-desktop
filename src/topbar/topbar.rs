@@ -1,7 +1,9 @@
 use iced::{
-    theme, widget::{button, column, container, horizontal_space, row, text}, Alignment, Command, Element
+    theme,
+    widget::{button, column, container, horizontal_space, row, scrollable, text},
+    Alignment, Command, Element,
 };
-use iced_aw::BootstrapIcon;
+use iced_aw::{BootstrapIcon, DropDown};
 
 use crate::{
     constants::{custom_theme, font_sizes, spacings},
@@ -27,7 +29,7 @@ pub enum TopbarMessage {
     OpenEditor,
     OpenFolder,
     OpenBrowser,
-    RepositoryActionsMessage(RepositoryActionsMessage)
+    RepositoryActionsMessage(RepositoryActionsMessage),
 }
 
 pub struct Topbar {
@@ -45,7 +47,6 @@ impl Topbar {
         Some(RepositoryActions::new())
     }
 
-
     pub fn update(&mut self, message: TopbarMessage) -> Command<TopbarMessage> {
         match message {
             TopbarMessage::ToggleRepositoryActions => {
@@ -57,50 +58,50 @@ impl Topbar {
                     Command::none()
                 }
             }
-            _ => {
-                Command::none()
-            }
+            _ => Command::none(),
         }
     }
 
     pub fn view(&self, git_action: TopbarGitAction) -> Element<TopbarMessage> {
         let left = row![
             // Repository name
-            column![button(
-                row![
+            DropDown::new(
+                button(
                     row![
-                        bootstrap_icon(BootstrapIcon::Book),
-                        column![
-                            text("Current repository")
-                                .size(font_sizes::H3)
-                                .style(theme::Text::Color(custom_theme::GREY_TEXT)),
-                            text("Repository Name").size(font_sizes::H2)
+                        row![
+                            bootstrap_icon(BootstrapIcon::Book),
+                            column![
+                                text("Current repository")
+                                    .size(font_sizes::H3)
+                                    .style(theme::Text::Color(custom_theme::GREY_TEXT)),
+                                text("Repository Name").size(font_sizes::H2)
+                            ]
                         ]
+                        .spacing(spacings::SMALL)
+                        .align_items(Alignment::Center),
+                        bootstrap_icon(BootstrapIcon::ChevronDown),
                     ]
-                    .spacing(spacings::SMALL)
+                    .spacing(spacings::MEDIUM)
                     .align_items(Alignment::Center),
-                    bootstrap_icon(BootstrapIcon::ChevronDown),
-                ]
-                .spacing(spacings::MEDIUM)
-                .align_items(Alignment::Center),
-            )
-            .on_press(TopbarMessage::ToggleRepositoryActions)
-            .style(iced::theme::Button::Custom(Box::new(
-                styles::button::Background1 {
-                    display_as_pressed: self.repository_actions.is_some(),
-                }
-            ))),
-            match &self.repository_actions {
-                Some(repository_actions) => {
-                    repository_actions.view().map(move |message| {
-                        TopbarMessage::RepositoryActionsMessage(message)
-                    })
-                }
-                None => {
-                    text("none").into()
-                }
-            }
-            ],
+                )
+                .on_press(TopbarMessage::ToggleRepositoryActions)
+                .style(iced::theme::Button::Custom(Box::new(
+                    styles::button::Background1 {
+                        display_as_pressed: self.repository_actions.is_some(),
+                    }
+                ))),
+                match &self.repository_actions {
+                    Some(repository_actions) => {
+                        repository_actions
+                            .view()
+                            .map(move |message| TopbarMessage::RepositoryActionsMessage(message))
+                    }
+                    None => {
+                        text("none").into()
+                    }
+                },
+                self.repository_actions.is_some()
+            ),
             // Branch name
             button(
                 row![
@@ -200,11 +201,7 @@ impl Topbar {
         .spacing(spacings::MEDIUM)
         .padding(spacings::SMALL)
         .align_items(Alignment::Center);
-        let right = row![
-            
-        ]
-        .spacing(spacings::SMALL)
-        .padding(spacings::SMALL);
+        let right = row![].spacing(spacings::SMALL).padding(spacings::SMALL);
 
         let content = row![left, horizontal_space(), right];
         let container = container(content).style(styles::container::topbar());

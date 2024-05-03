@@ -1,6 +1,6 @@
 use iced::{
     alignment,
-    widget::{column, container, row, text, text_input},
+    widget::{column, container, row, scrollable, text, text_input},
     Alignment, Element, Length,
 };
 use iced_aw::BootstrapIcon;
@@ -9,7 +9,7 @@ use crate::{
     constants::spacings,
     general_widgets::{
         icons::bootstrap_icon,
-        seperators::{seperator_background_1, seperator_background_2},
+        seperators::{seperator_background_2},
     },
     styles,
 };
@@ -39,22 +39,22 @@ impl RepositoryActions {
                         row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
                             .spacing(spacings::SMALL)
                     )
-                    .style(styles::container::test_background_2())
-                    .padding(spacings::SMALL),
-                    seperator_background_1(),
+                    .style(styles::container::test_background_4())
+                    .padding(spacings::SMALL).width(Length::Fill),
+                    seperator_background_2(),
                     container(
                         row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
                             .spacing(spacings::SMALL)
                     )
-                    .style(styles::container::test_background_2())
-                    .padding(spacings::SMALL),
-                    seperator_background_1(),
+                    .style(styles::container::test_background_4())
+                    .padding(spacings::SMALL).width(Length::Fill),
+                    seperator_background_2(),
                     container(
                         row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
                             .spacing(spacings::SMALL)
                     )
-                    .style(styles::container::test_background_2())
-                    .padding(spacings::SMALL),
+                    .style(styles::container::test_background_4())
+                    .padding(spacings::SMALL).width(Length::Fill),
                 ],
             ]
             .spacing(spacings::SMALL),
@@ -66,36 +66,38 @@ impl RepositoryActions {
                         row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
                             .spacing(spacings::SMALL)
                     )
-                    .style(styles::container::test_background_2())
-                    .padding(spacings::SMALL),
-                    seperator_background_1(),
+                    .style(styles::container::test_background_4())
+                    .padding(spacings::SMALL).width(Length::Fill),
+                    seperator_background_2(),
                     container(
                         row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
                             .spacing(spacings::SMALL)
                     )
-                    .style(styles::container::test_background_2())
-                    .padding(spacings::SMALL),
-                    seperator_background_1(),
+                    .style(styles::container::test_background_4())
+                    .padding(spacings::SMALL).width(Length::Fill),
+                    seperator_background_2(),
                     container(
                         row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
                             .spacing(spacings::SMALL)
                     )
-                    .style(styles::container::test_background_2())
-                    .padding(spacings::SMALL),
-                    seperator_background_1(),
+                    .style(styles::container::test_background_4())
+                    .padding(spacings::SMALL).width(Length::Fill),
+                    seperator_background_2(),
                     container(
                         row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
                             .spacing(spacings::SMALL)
                     )
-                    .style(styles::container::test_background_2())
-                    .padding(spacings::SMALL),
+                    .style(styles::container::test_background_4())
+                    .padding(spacings::SMALL)
+                    .width(Length::Fill),
                 ],
             ]
             .spacing(spacings::SMALL)
         ]
         .spacing(spacings::MEDIUM)
         .padding(spacings::SMALL);
-        let container = container(content);
+
+        let container = scrollable(container(content).style(styles::container::test_background_3()));
         container.into()
     }
 }

@@ -10,6 +10,7 @@ mod theme;
 mod general_widgets;
 mod styles;
 mod topbar;
+mod data;
 
 pub fn main() -> iced::Result {
 

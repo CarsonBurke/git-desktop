@@ -1,6 +1,6 @@
 use iced::{border::Radius, widget, Background, Border, Theme};
 
-use crate::constants::custom_theme::{BACKGROUND_1, BACKGROUND_2, BACKGROUND_3};
+use crate::constants::custom_theme::{BACKGROUND_1, BACKGROUND_2, BACKGROUND_3, BACKGROUND_4};
 
 // pub fn main_content(theme: &Theme) -> widget::container::Appearance {
 //     widget::container::Appearance {
@@ -101,6 +101,13 @@ pub fn test_background_2() -> widget::container::Appearance {
 pub fn test_background_3() -> widget::container::Appearance {
     widget::container::Appearance {
         background: Some(Background::from(BACKGROUND_3)),
+        ..Default::default()
+    }
+}
+
+pub fn test_background_4() -> widget::container::Appearance {
+    widget::container::Appearance {
+        background: Some(Background::from(BACKGROUND_4)),
         ..Default::default()
     }
 }

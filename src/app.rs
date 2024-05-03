@@ -6,12 +6,7 @@ use iced::{
 use iced_aw::split;
 
 use crate::{
-    constants::spacings,
-    pages::main::{Main, MainMessage},
-    sidebar::sidebar::{Sidebar, SidebarMessage},
-    styles,
-    theme::CustomThemeChoice,
-    topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage},
+    constants::spacings, data::repositories::{Repositories, Repository}, pages::main::{Main, MainMessage}, sidebar::sidebar::{Sidebar, SidebarMessage}, styles, theme::CustomThemeChoice, topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage}
 };
 
 #[derive(Debug, Clone, Copy)]
@@ -28,6 +23,7 @@ pub struct App {
     topbar: Topbar,
     main: Main,
     divider_position: Option<u16>,
+    repositories: Repositories,
 }
 
 impl Application for App {
@@ -37,13 +33,20 @@ impl Application for App {
     type Flags = ();
 
     fn new(_flags: ()) -> (Self, Command<AppMessage>) {
+
+        let mut new_self = Self {
+            sidebar: Sidebar::new(),
+            topbar: Topbar::new(),
+            main: Main::new(),
+            divider_position: Some(200),
+            repositories: Repositories::new(),
+        };
+
+        new_self.repositories.insert("Git desktop".to_string(), Repository::new());
+
+
         (
-            Self {
-                sidebar: Sidebar::new(),
-                topbar: Topbar::new(),
-                main: Main::new(),
-                divider_position: Some(200),
-            },
+            new_self,
             Command::batch(vec![
                 font::load(iced_aw::BOOTSTRAP_FONT_BYTES).map(AppMessage::FontLoaded)
             ]),
