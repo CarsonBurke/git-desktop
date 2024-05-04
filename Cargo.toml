@@ -17,3 +17,4 @@ iced_aw = { version = "0.8.0", default-features = true, features = ["icons", "sp
 rand = "0.8.5"
 ordered-float = "4.2.0"
 webbrowser = "1.0.0"
+opener = "0.7.0"

@@ -121,6 +121,22 @@ impl Topbar {
 
                 Command::none()
             }
+            TopbarMessage::OpenFolder => {
+
+                let Some(repository_name) = repository_name else {
+                    println!("[Error] Expected repository name");
+                    return Command::none()
+                };
+        
+                let Some(repository) = repositories.get(repository_name) else {
+                    println!("[Error] Expected repository");
+                    return Command::none()
+                };
+
+                let _ = opener::open(repository.file_path.as_str());
+
+                Command::none()
+            }
             _ => Command::none(),
         }
     }

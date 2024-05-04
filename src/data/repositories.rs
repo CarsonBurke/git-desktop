@@ -7,6 +7,7 @@ pub struct Repository {
     pub current_branch: Option<String>,
     pub url: String,
     pub provider: GitProvider,
+    pub file_path: String,
 }
 
 impl Repository {
@@ -16,6 +17,7 @@ impl Repository {
             current_branch: Some("main".to_string()),
             url: "https://github.com/".to_string(),
             provider: GitProvider::GitHub,
+            file_path: "/home/marvintmb/Documents/GitHub/git-desktop/".to_string(),
         };
 
         new_self.branches.insert(
