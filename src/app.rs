@@ -9,7 +9,7 @@ use crate::{
     constants::spacings, data::repositories::{Repositories, Repository}, pages::main::{Main, MainMessage}, sidebar::sidebar::{Sidebar, SidebarMessage}, styles, theme::CustomThemeChoice, topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage}
 };
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub enum AppMessage {
     SidebarMessage(SidebarMessage),
     TopbarMessage(TopbarMessage),
@@ -24,6 +24,7 @@ pub struct App {
     main: Main,
     divider_position: Option<u16>,
     repositories: Repositories,
+    current_repository_name: Option<String>
 }
 
 impl Application for App {
@@ -40,10 +41,13 @@ impl Application for App {
             main: Main::new(),
             divider_position: Some(200),
             repositories: Repositories::new(),
+            current_repository_name: None,
         };
 
-        new_self.repositories.insert("Git desktop".to_string(), Repository::new());
+        let repository = Repository::new();
 
+        new_self.repositories.insert("Git desktop".to_string(), repository);
+        new_self.current_repository_name = Some("Git desktop".to_string());
 
         (
             new_self,
@@ -114,7 +118,7 @@ impl Application for App {
         )))        .height(Length::Fill);
         let right = column![
             self.topbar
-                .view(TopbarGitAction::Fetch)
+                .view(TopbarGitAction::Fetch, &self.current_repository_name, &self.repositories)
                 .map(move |message| { AppMessage::TopbarMessage(message) }),
             main
         ];

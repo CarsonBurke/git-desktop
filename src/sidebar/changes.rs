@@ -21,7 +21,7 @@ use crate::{
 
 use super::sidebar::DisplayState;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub enum ChangesMessage {}
 
 pub struct Changes {

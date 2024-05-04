@@ -7,11 +7,16 @@ use iced_aw::{BootstrapIcon, DropDown};
 
 use crate::{
     constants::{custom_theme, font_sizes, spacings},
+    data::repositories::{self, Repositories, Repository},
     general_widgets::icons::bootstrap_icon,
+    pages::repository,
     styles,
 };
 
-use super::repository_actions::{RepositoryActions, RepositoryActionsMessage};
+use super::{
+    branch_actions::{BranchActions, BranchActionsMessage},
+    repository_actions::{self, RepositoryActions, RepositoryActionsMessage},
+};
 
 pub enum TopbarGitAction {
     Fetch,
@@ -19,7 +24,7 @@ pub enum TopbarGitAction {
     Push,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub enum TopbarMessage {
     ToggleRepositoryActions,
     ToggleBranchActions,
@@ -30,16 +35,19 @@ pub enum TopbarMessage {
     OpenFolder,
     OpenBrowser,
     RepositoryActionsMessage(RepositoryActionsMessage),
+    BranchActionsMessage(BranchActionsMessage),
 }
 
 pub struct Topbar {
     repository_actions: Option<RepositoryActions>,
+    branch_actions: Option<BranchActions>,
 }
 
 impl Topbar {
     pub fn new() -> Self {
         Self {
             repository_actions: Self::create_repository_actions(),
+            branch_actions: Self::create_branch_actions(),
         }
     }
 
@@ -47,22 +55,79 @@ impl Topbar {
         Some(RepositoryActions::new())
     }
 
+    fn create_branch_actions() -> Option<BranchActions> {
+        Some(BranchActions::new())
+    }
+
     pub fn update(&mut self, message: TopbarMessage) -> Command<TopbarMessage> {
         match message {
             TopbarMessage::ToggleRepositoryActions => {
                 if self.repository_actions.is_some() {
                     self.repository_actions = None;
+
                     Command::none()
                 } else {
                     self.repository_actions = Self::create_repository_actions();
+                    self.branch_actions = None;
+
                     Command::none()
                 }
+            }
+            TopbarMessage::ToggleBranchActions => {
+                if self.branch_actions.is_some() {
+                    self.branch_actions = None;
+
+                    Command::none()
+                } else {
+                    self.branch_actions = Self::create_branch_actions();
+                    self.repository_actions = None;
+
+                    Command::none()
+                }
+            }
+            TopbarMessage::RepositoryActionsMessage(repository_actions_message) => {
+                let Some(repository_actions) = &mut self.repository_actions else {
+                    return Command::none();
+                };
+
+                let _ = repository_actions.update(repository_actions_message);
+
+                Command::none()
+            }
+            TopbarMessage::BranchActionsMessage(branch_actions_message) => {
+                let Some(branch_actions) = &mut self.branch_actions else {
+                    return Command::none();
+                };
+
+                let _ = branch_actions.update(branch_actions_message);
+
+                Command::none()
             }
             _ => Command::none(),
         }
     }
 
-    pub fn view(&self, git_action: TopbarGitAction) -> Element<TopbarMessage> {
+    fn no_repository_view(&self) -> Element<TopbarMessage> {
+        let content = row![text("no repository")];
+
+        let container = container(content).style(styles::container::topbar());
+        container.into()
+    }
+
+    pub fn view(
+        &self,
+        git_action: TopbarGitAction,
+        repository_name: &Option<String>,
+        repositories: &Repositories,
+    ) -> Element<TopbarMessage> {
+        let Some(repository_name) = repository_name else {
+            return self.no_repository_view();
+        };
+
+        let Some(repository) = repositories.get(repository_name) else {
+            return self.no_repository_view();
+        };
+
         let left = row![
             // Repository name
             DropDown::new(
@@ -74,7 +139,7 @@ impl Topbar {
                                 text("Current repository")
                                     .size(font_sizes::H3)
                                     .style(theme::Text::Color(custom_theme::GREY_TEXT)),
-                                text("Repository Name").size(font_sizes::H2)
+                                text(repository_name).size(font_sizes::H2)
                             ]
                         ]
                         .spacing(spacings::SMALL)
@@ -94,7 +159,7 @@ impl Topbar {
                     Some(repository_actions) => {
                         repository_actions
                             .view()
-                            .map(move |message| TopbarMessage::RepositoryActionsMessage(message))
+                            .map(TopbarMessage::RepositoryActionsMessage)
                     }
                     None => {
                         text("none").into()
@@ -103,30 +168,49 @@ impl Topbar {
                 self.repository_actions.is_some()
             ),
             // Branch name
-            button(
-                row![
+            DropDown::new(
+                button(
                     row![
-                        bootstrap_icon(BootstrapIcon::Alt),
-                        column![
-                            text("Current branch")
-                                .size(font_sizes::H3)
-                                .style(theme::Text::Color(custom_theme::GREY_TEXT)),
-                            text("Branch Name").size(font_sizes::H2)
+                        row![
+                            bootstrap_icon(BootstrapIcon::Alt),
+                            column![
+                                text("Current branch")
+                                    .size(font_sizes::H3)
+                                    .style(theme::Text::Color(custom_theme::GREY_TEXT)),
+                                text(
+                                    repository
+                                        .current_branch
+                                        .clone()
+                                        .unwrap_or("no default branch".to_string())
+                                )
+                                .size(font_sizes::H2)
+                            ]
                         ]
+                        .spacing(spacings::SMALL)
+                        .align_items(Alignment::Center),
+                        bootstrap_icon(BootstrapIcon::ChevronDown),
                     ]
-                    .spacing(spacings::SMALL)
+                    .spacing(spacings::MEDIUM)
                     .align_items(Alignment::Center),
-                    bootstrap_icon(BootstrapIcon::ChevronDown),
-                ]
-                .spacing(spacings::MEDIUM)
-                .align_items(Alignment::Center),
-            )
-            .on_press(TopbarMessage::ToggleBranchActions)
-            .style(iced::theme::Button::Custom(Box::new(
-                styles::button::Background1 {
-                    display_as_pressed: false,
-                }
-            ))),
+                )
+                .on_press(TopbarMessage::ToggleBranchActions)
+                .style(iced::theme::Button::Custom(Box::new(
+                    styles::button::Background1 {
+                        display_as_pressed: self.branch_actions.is_some(),
+                    }
+                ))),
+                match &self.branch_actions {
+                    Some(branch_actions) => {
+                        branch_actions
+                            .view(&repository.current_branch, &repository.branches)
+                            .map(TopbarMessage::BranchActionsMessage)
+                    }
+                    None => {
+                        text("none").into()
+                    }
+                },
+                self.branch_actions.is_some()
+            ),
             // Action
             match git_action {
                 TopbarGitAction::Fetch => {
@@ -204,6 +288,7 @@ impl Topbar {
         let right = row![].spacing(spacings::SMALL).padding(spacings::SMALL);
 
         let content = row![left, horizontal_space(), right];
+
         let container = container(content).style(styles::container::topbar());
         container.into()
     }

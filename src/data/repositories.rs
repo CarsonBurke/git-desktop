@@ -3,8 +3,8 @@ use std::collections::HashMap;
 pub type Repositories = HashMap<String, Repository>;
 
 pub struct Repository {
-    branches: HashMap<String, Branch>,
-    current_branch: Option<String>,
+    pub branches: Branches,
+    pub current_branch: Option<String>,
 }
 
 impl Repository {
@@ -17,7 +17,6 @@ impl Repository {
         new_self.branches.insert(
             "main".to_string(),
             Branch {
-                name: "main".to_string(),
                 commits: HashMap::new(),
             },
         );
@@ -27,7 +26,6 @@ impl Repository {
                 branch.commits.insert(
                     "id".to_string(),
                     Commit {
-                        id: "id".to_string(),
                         author: "Carson".to_string(),
                         message: "commit message".to_string(),
                         time: 16,
@@ -41,13 +39,15 @@ impl Repository {
     }
 }
 
+pub type Branches = HashMap<String, Branch>;
+
 pub struct Branch {
-    name: String,
-    commits: HashMap<String, Commit>,
+    commits: Commits,
 }
 
+pub type Commits = HashMap<String, Commit>;
+
 pub struct Commit {
-    id: String,
     author: String,
     message: String,
     time: u16,

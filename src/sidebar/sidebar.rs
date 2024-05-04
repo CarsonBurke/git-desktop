@@ -10,7 +10,7 @@ use crate::{
 
 use super::{changes::{Changes, ChangesMessage}, history_and_changes::HistoryAndChanges};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub enum SidebarMessage {
     TestMessage(ChangesMessage),
 }

@@ -2,7 +2,7 @@ use iced::{widget::{column, container}, Element};
 
 use super::repository::{repository::{RepositoryPage, RepositoryPageMessage}, version_graph::{self, VersionGraph}};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub enum MainMessage {
     RepositoryPageMessage(RepositoryPageMessage)
 }

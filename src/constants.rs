@@ -9,9 +9,10 @@ pub mod spacings {
 }
 
 pub mod font_sizes {
-    pub const H1: u16 = 15;
-    pub const H2: u16 = 13;
+    pub const H1: u16 = 16;
+    pub const H2: u16 = 14;
     pub const H3: u16 = 11;
+    pub const H4: u16 = 10;
     pub const P: u16 = 11;
 }
 
