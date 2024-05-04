@@ -70,7 +70,7 @@ impl Application for App {
             AppMessage::TopbarMessage(topbar_message) => {
                 println!("topbar message {:?}", topbar_message);
 
-                let _ = self.topbar.update(topbar_message).map(AppMessage::TopbarMessage);
+                let _ = self.topbar.update(topbar_message, TopbarGitAction::Fetch, &self.current_repository_name, &self.repositories).map(AppMessage::TopbarMessage);
 
                 match topbar_message {
                     _ => {

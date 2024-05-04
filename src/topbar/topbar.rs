@@ -59,7 +59,9 @@ impl Topbar {
         Some(BranchActions::new())
     }
 
-    pub fn update(&mut self, message: TopbarMessage) -> Command<TopbarMessage> {
+    pub fn update(&mut self, message: TopbarMessage,         git_action: TopbarGitAction,
+        repository_name: &Option<String>,
+        repositories: &Repositories,) -> Command<TopbarMessage> {
         match message {
             TopbarMessage::ToggleRepositoryActions => {
                 if self.repository_actions.is_some() {
@@ -100,6 +102,22 @@ impl Topbar {
                 };
 
                 let _ = branch_actions.update(branch_actions_message);
+
+                Command::none()
+            }
+            TopbarMessage::OpenBrowser => {
+
+                let Some(repository_name) = repository_name else {
+                    println!("[Error] Expected repository name");
+                    return Command::none()
+                };
+        
+                let Some(repository) = repositories.get(repository_name) else {
+                    println!("[Error] Expected repository");
+                    return Command::none()
+                };
+
+                let _ = webbrowser::open(repository.url.as_str());
 
                 Command::none()
             }

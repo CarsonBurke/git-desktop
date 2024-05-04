@@ -16,3 +16,4 @@ iced = { version = "0.12.1", default-features = true, features = ["wgpu", "advan
 iced_aw = { version = "0.8.0", default-features = true, features = ["icons", "split", "spinner", "menu", "tab_bar", "floating_element", "grid", "wrap"] }
 rand = "0.8.5"
 ordered-float = "4.2.0"
+webbrowser = "1.0.0"

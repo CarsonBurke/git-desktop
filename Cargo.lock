@@ -835,6 +835,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aa9a19cbb55df58761df49b23516a86d432839add4af60fc256da840f66ed35b"
 
 [[package]]
+name = "form_urlencoded"
+version = "1.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e13624c2627564efccf4934284bdd98cbaa14e79b0b5a141218e507b3a823456"
+dependencies = [
+ "percent-encoding",
+]
+
+[[package]]
 name = "futures"
 version = "0.3.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -969,6 +978,7 @@ dependencies = [
  "iced_aw",
  "ordered-float",
  "rand",
+ "webbrowser",
 ]
 
 [[package]]
@@ -1137,6 +1147,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dfa686283ad6dd069f105e5ab091b04c62850d3e4cf5d67debad1933f55023df"
 
 [[package]]
+name = "home"
+version = "0.5.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e3d1354bf6b7235cb4a0576c2619fd4ed18183f689b12b006a0ee7329eeff9a5"
+dependencies = [
+ "windows-sys 0.52.0",
+]
+
+[[package]]
 name = "iana-time-zone"
 version = "0.1.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1200,7 +1219,7 @@ dependencies = [
  "log",
  "num-traits",
  "palette",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "smol_str",
  "thiserror",
  "web-time",
@@ -1238,7 +1257,7 @@ dependencies = [
  "log",
  "lyon_path",
  "once_cell",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "rustc-hash",
  "thiserror",
  "unicode-segmentation",
@@ -1266,7 +1285,7 @@ checksum = "a79f852c01cc6d61663c94379cb3974ac3ad315a28c504e847d573e094f46822"
 dependencies = [
  "iced_core",
  "iced_futures",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "thiserror",
 ]
 
@@ -1359,6 +1378,16 @@ dependencies = [
  "block2",
  "dispatch",
  "objc2",
+]
+
+[[package]]
+name = "idna"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "634d9b1461af396cad843f47fdba5597a4f9e6ddd4bfb6ff5d85028c25cb12f6"
+dependencies = [
+ "unicode-bidi",
+ "unicode-normalization",
 ]
 
 [[package]]
@@ -1725,7 +1754,7 @@ dependencies = [
  "log",
  "ndk-sys",
  "num_enum",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "thiserror",
 ]
 
@@ -2225,6 +2254,12 @@ checksum = "f60fcc7d6849342eff22c4350c8b9a989ee8ceabc4b481253e8946b9fe83d684"
 
 [[package]]
 name = "raw-window-handle"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f2ff9a1f06a88b01621b7ae906ef0211290d1c8a168a15542486a8f61c0833b9"
+
+[[package]]
+name = "raw-window-handle"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8cc3bcbdb1ddfc11e700e62968e6b4cc9c75bb466464ad28fb61c5b2c964418b"
@@ -2508,7 +2543,7 @@ dependencies = [
  "log",
  "memmap2 0.9.4",
  "objc",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "redox_syscall 0.5.1",
  "rustix",
  "tiny-xlib",
@@ -2815,6 +2850,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3b09c83c3c29d37506a3e260c08c03743a6bb66a9cd432c6934ab501a190571f"
 
 [[package]]
+name = "unicode-normalization"
+version = "0.1.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a56d1686db2308d901306f92a263857ef59ea39678a5458e7cb17f01415101f5"
+dependencies = [
+ "tinyvec",
+]
+
+[[package]]
 name = "unicode-properties"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2843,6 +2887,17 @@ name = "unicode-xid"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f962df74c8c05a667b5ee8bcf162993134c104e96440b663c8daa176dc772d8c"
+
+[[package]]
+name = "url"
+version = "2.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "31e6302e3bb753d46e83516cae55ae196fc0c309407cf11ab35cc51a4c2a4633"
+dependencies = [
+ "form_urlencoded",
+ "idna",
+ "percent-encoding",
+]
 
 [[package]]
 name = "version_check"
@@ -3077,6 +3132,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "webbrowser"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "60b6f804e41d0852e16d2eaee61c7e4f7d3e8ffdb7b8ed85886aeb0791fe9fcd"
+dependencies = [
+ "core-foundation",
+ "home",
+ "jni",
+ "log",
+ "ndk-context",
+ "objc",
+ "raw-window-handle 0.5.2",
+ "url",
+ "web-sys",
+]
+
+[[package]]
 name = "weezl"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3096,7 +3168,7 @@ dependencies = [
  "naga",
  "parking_lot 0.12.2",
  "profiling",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "smallvec",
  "static_assertions",
  "wasm-bindgen",
@@ -3124,7 +3196,7 @@ dependencies = [
  "once_cell",
  "parking_lot 0.12.2",
  "profiling",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "rustc-hash",
  "smallvec",
  "thiserror",
@@ -3167,7 +3239,7 @@ dependencies = [
  "parking_lot 0.12.2",
  "profiling",
  "range-alloc",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "renderdoc-sys",
  "rustc-hash",
  "smallvec",
@@ -3236,7 +3308,7 @@ dependencies = [
  "clipboard_macos",
  "clipboard_wayland",
  "clipboard_x11",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "thiserror",
 ]
 
@@ -3491,7 +3563,7 @@ dependencies = [
  "once_cell",
  "orbclient",
  "percent-encoding",
- "raw-window-handle",
+ "raw-window-handle 0.6.1",
  "redox_syscall 0.3.5",
  "rustix",
  "sctk-adwaita",

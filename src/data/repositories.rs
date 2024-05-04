@@ -5,6 +5,8 @@ pub type Repositories = HashMap<String, Repository>;
 pub struct Repository {
     pub branches: Branches,
     pub current_branch: Option<String>,
+    pub url: String,
+    pub provider: GitProvider,
 }
 
 impl Repository {
@@ -12,6 +14,8 @@ impl Repository {
         let mut new_self = Self {
             branches: HashMap::new(),
             current_branch: Some("main".to_string()),
+            url: "https://github.com/".to_string(),
+            provider: GitProvider::GitHub,
         };
 
         new_self.branches.insert(
@@ -37,6 +41,11 @@ impl Repository {
 
         new_self
     }
+}
+
+pub enum GitProvider {
+    GitHub,
+    GitLab,
 }
 
 pub type Branches = HashMap<String, Branch>;
