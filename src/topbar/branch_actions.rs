@@ -83,8 +83,8 @@ impl BranchActions {
                             column![
                                 {
                                     match i == 0 {
-                                        true => seperator_background_2(),
-                                        false => container(row![]),
+                                        true => container(row![]),
+                                        false => seperator_background_2(),
                                     }
                                 },
                                 container(row![
