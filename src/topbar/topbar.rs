@@ -8,7 +8,7 @@ use iced_aw::{BootstrapIcon, DropDown};
 use crate::{
     constants::{custom_theme, font_sizes, spacings},
     data::repositories::{self, Repositories, Repository},
-    general_widgets::icons::bootstrap_icon,
+    general_widgets::icons::{bootstrap_icon, dropdown_arrow},
     pages::repository,
     styles,
 };
@@ -46,8 +46,8 @@ pub struct Topbar {
 impl Topbar {
     pub fn new() -> Self {
         Self {
-            repository_actions: Self::create_repository_actions(),
-            branch_actions: Self::create_branch_actions(),
+            repository_actions: None,
+            branch_actions: None,
         }
     }
 
@@ -59,9 +59,13 @@ impl Topbar {
         Some(BranchActions::new())
     }
 
-    pub fn update(&mut self, message: TopbarMessage,         git_action: TopbarGitAction,
+    pub fn update(
+        &mut self,
+        message: TopbarMessage,
+        git_action: TopbarGitAction,
         repository_name: &Option<String>,
-        repositories: &Repositories,) -> Command<TopbarMessage> {
+        repositories: &Repositories,
+    ) -> Command<TopbarMessage> {
         match message {
             TopbarMessage::ToggleRepositoryActions => {
                 if self.repository_actions.is_some() {
@@ -106,15 +110,14 @@ impl Topbar {
                 Command::none()
             }
             TopbarMessage::OpenBrowser => {
-
                 let Some(repository_name) = repository_name else {
                     println!("[Error] Expected repository name");
-                    return Command::none()
+                    return Command::none();
                 };
-        
+
                 let Some(repository) = repositories.get(repository_name) else {
                     println!("[Error] Expected repository");
-                    return Command::none()
+                    return Command::none();
                 };
 
                 let _ = webbrowser::open(repository.url.as_str());
@@ -122,15 +125,14 @@ impl Topbar {
                 Command::none()
             }
             TopbarMessage::OpenFolder => {
-
                 let Some(repository_name) = repository_name else {
                     println!("[Error] Expected repository name");
-                    return Command::none()
+                    return Command::none();
                 };
-        
+
                 let Some(repository) = repositories.get(repository_name) else {
                     println!("[Error] Expected repository");
-                    return Command::none()
+                    return Command::none();
                 };
 
                 let _ = opener::open(repository.file_path.as_str());
@@ -178,7 +180,7 @@ impl Topbar {
                         ]
                         .spacing(spacings::SMALL)
                         .align_items(Alignment::Center),
-                        bootstrap_icon(BootstrapIcon::ChevronDown),
+                        dropdown_arrow(self.repository_actions.is_some()),
                     ]
                     .spacing(spacings::MEDIUM)
                     .align_items(Alignment::Center),
@@ -222,7 +224,7 @@ impl Topbar {
                         ]
                         .spacing(spacings::SMALL)
                         .align_items(Alignment::Center),
-                        bootstrap_icon(BootstrapIcon::ChevronDown),
+                        dropdown_arrow(self.branch_actions.is_some()),
                     ]
                     .spacing(spacings::MEDIUM)
                     .align_items(Alignment::Center),
