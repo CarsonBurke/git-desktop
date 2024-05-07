@@ -60,10 +60,10 @@ impl CreateCommit {
         }
     }
 
-    pub fn view(&self) -> Element<CreateCommitMessage> {
+    pub fn view(&self, branch_name: String) -> Element<CreateCommitMessage> {
         let content = column![
             button(row![
-                text("Commit changes").size(font_sizes::H2),
+                text("Commit").size(font_sizes::H2),
                 horizontal_space(),
                 dropdown_arrow(self.expanded)
             ])
@@ -93,7 +93,7 @@ impl CreateCommit {
                             row![
                                 horizontal_space(),
                                 bootstrap_icon(BootstrapIcon::CloudArrowUp),
-                                text("Commit").size(font_sizes::H2),
+                                text(format!("Commit to {}", branch_name)).size(font_sizes::H3),
                                 horizontal_space(),
                             ]
                             .spacing(spacings::SMALL)

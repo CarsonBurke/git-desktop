@@ -6,7 +6,13 @@ use iced::{
 use iced_aw::split;
 
 use crate::{
-    constants::spacings, data::repositories::{Repositories, Repository}, pages::main::{Main, MainMessage}, sidebar::sidebar::{Sidebar, SidebarMessage}, styles, theme::CustomThemeChoice, topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage}
+    constants::spacings,
+    data::repositories::{Repositories, Repository},
+    pages::main::{Main, MainMessage},
+    sidebar::sidebar::{Sidebar, SidebarMessage},
+    styles,
+    theme::CustomThemeChoice,
+    topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage},
 };
 
 #[derive(Debug, Clone)]
@@ -24,7 +30,7 @@ pub struct App {
     main: Main,
     divider_position: Option<u16>,
     repositories: Repositories,
-    current_repository_name: Option<String>
+    current_repository_name: Option<String>,
 }
 
 impl Application for App {
@@ -34,7 +40,6 @@ impl Application for App {
     type Flags = ();
 
     fn new(_flags: ()) -> (Self, Command<AppMessage>) {
-
         let mut new_self = Self {
             sidebar: Sidebar::new(),
             topbar: Topbar::new(),
@@ -46,7 +51,9 @@ impl Application for App {
 
         let repository = Repository::new();
 
-        new_self.repositories.insert("Git desktop".to_string(), repository);
+        new_self
+            .repositories
+            .insert("Git desktop".to_string(), repository);
         new_self.current_repository_name = Some("Git desktop".to_string());
 
         (
@@ -66,19 +73,28 @@ impl Application for App {
             AppMessage::SidebarMessage(sidebar_message) => {
                 println!("sidebar message {:?}", sidebar_message);
 
-                let _ = self.sidebar.update(sidebar_message).map(AppMessage::SidebarMessage);
+                let _ = self
+                    .sidebar
+                    .update(sidebar_message)
+                    .map(AppMessage::SidebarMessage);
 
                 Command::none()
             }
             AppMessage::TopbarMessage(topbar_message) => {
                 println!("topbar message {:?}", topbar_message);
 
-                let _ = self.topbar.update(topbar_message, TopbarGitAction::Fetch, &self.current_repository_name, &self.repositories).map(AppMessage::TopbarMessage);
+                let _ = self
+                    .topbar
+                    .update(
+                        topbar_message,
+                        TopbarGitAction::Fetch,
+                        &self.current_repository_name,
+                        &self.repositories,
+                    )
+                    .map(AppMessage::TopbarMessage);
 
                 match topbar_message {
-                    _ => {
-                        Command::none()
-                    }
+                    _ => Command::none(),
                 }
             }
             AppMessage::MainMessage(page_message) => {
@@ -104,30 +120,40 @@ impl Application for App {
     fn view(&self) -> Element<AppMessage> {
         let left = column![self
             .sidebar
-            .view()
+            .view(&self.current_repository_name, &self.repositories)
             .map(move |message| { AppMessage::SidebarMessage(message) })];
 
         let main_content = container(
-                self.main
-                    .view()
-                    .map(move |message| AppMessage::MainMessage(message)),
-            
+            self.main
+                .view()
+                .map(move |message| AppMessage::MainMessage(message)),
         )
         .padding(spacings::MEDIUM)
         .width(Length::Fill)
         .style(styles::container::main_content());
-        let main = scrollable(main_content).style(iced::theme::Scrollable::Custom(Box::new(
-            styles::scrollable::Background1,
-        )))        .height(Length::Fill);
+        let main = scrollable(main_content)
+            .style(iced::theme::Scrollable::Custom(Box::new(
+                styles::scrollable::Background1,
+            )))
+            .height(Length::Fill);
         let right = column![
             self.topbar
-                .view(TopbarGitAction::Fetch, &self.current_repository_name, &self.repositories)
+                .view(
+                    TopbarGitAction::Fetch,
+                    &self.current_repository_name,
+                    &self.repositories
+                )
                 .map(move |message| { AppMessage::TopbarMessage(message) }),
             main
         ];
 
-        let content = split::Split::new(left, right, self.divider_position, split::Axis::Vertical, AppMessage::DividerDragTo);
-        
+        let content = split::Split::new(
+            left,
+            right,
+            self.divider_position,
+            split::Axis::Vertical,
+            AppMessage::DividerDragTo,
+        );
 
         let container = container(content);
         container.into()

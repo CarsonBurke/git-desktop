@@ -1,15 +1,16 @@
 use iced::{
-    widget::{column, container, horizontal_space, row}, Command, Element, Length
+    widget::{column, container, horizontal_space, row},
+    Command, Element, Length,
 };
 use iced_aw::BootstrapIcon;
 
 use crate::{
-    constants::spacings, general_widgets::icons::bootstrap_icon, styles::container::sidebar,
+    constants::spacings, data::repositories::Repositories, general_widgets::icons::bootstrap_icon, styles::container::sidebar
 };
 
 use super::{
     changes::{Changes, ChangesMessage},
-    create_commit::{CreateCommit, CreateCommitMessage},
+    create_commit::{self, CreateCommit, CreateCommitMessage},
     history_and_changes::HistoryAndChanges,
 };
 
@@ -30,8 +31,8 @@ pub enum DisplayState {
 // }
 
 pub struct SidebarChildren {
-    history_and_changes: HistoryAndChanges,
-    create_commit: CreateCommit,
+    history_and_changes: Option<HistoryAndChanges>,
+    create_commit: Option<CreateCommit>,
 }
 
 pub struct Sidebar {
@@ -49,8 +50,8 @@ impl Sidebar {
             //     },
             // },
             children: SidebarChildren {
-                history_and_changes: HistoryAndChanges::new(),
-                create_commit: CreateCommit::new(),
+                history_and_changes: Some(HistoryAndChanges::new()),
+                create_commit: Some(CreateCommit::new()),
             },
             test_child: Changes::new(),
         }
@@ -59,12 +60,33 @@ impl Sidebar {
     pub fn update(&mut self, message: SidebarMessage) -> Command<SidebarMessage> {
         match message {
             SidebarMessage::CreateCommitMessage(create_commit_message) => {
-                self.children.create_commit.update(create_commit_message).map(SidebarMessage::CreateCommitMessage)
+                let Some(create_commit) = &mut self.children.create_commit else {
+                    return Command::none();
+                };
+
+                let _ = create_commit
+                    .update(create_commit_message)
+                    .map(SidebarMessage::CreateCommitMessage);
+
+                Command::none()
             }
         }
     }
 
-    pub fn view(&self) -> Element<SidebarMessage> {
+    pub fn view(
+        &self,
+        repository_name: &Option<String>,
+        repositories: &Repositories,
+    ) -> Element<SidebarMessage> {
+
+        let Some(repository_name) = repository_name else {
+            return container(row![]).into()
+        };
+
+        let Some(repository) = repositories.get(repository_name) else {
+            return container(row![]).into()
+        };
+
         let topbar = row![
             bootstrap_icon(BootstrapIcon::Lamp),
             horizontal_space(),
@@ -73,7 +95,12 @@ impl Sidebar {
 
         let content = column![
             topbar,
-            self.children.create_commit.view().map(SidebarMessage::CreateCommitMessage),
+            match &self.children.create_commit {
+                Some(create_commit) => create_commit
+                    .view(repository.current_branch.clone().unwrap_or("[Error] no branch".to_string()))
+                    .map(SidebarMessage::CreateCommitMessage),
+                None => column![].into(),
+            }
         ]
         .spacing(spacings::MEDIUM);
         let container = container(content)
