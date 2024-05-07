@@ -120,8 +120,8 @@ impl Application for App {
     fn view(&self) -> Element<AppMessage> {
         let left = column![self
             .sidebar
-            .view(&self.current_repository_name, &self.repositories)
-            .map(move |message| { AppMessage::SidebarMessage(message) })];
+            .view(self.divider_position, &self.current_repository_name, &self.repositories)
+            .map(AppMessage::SidebarMessage)];
 
         let main_content = container(
             self.main
@@ -143,7 +143,7 @@ impl Application for App {
                     &self.current_repository_name,
                     &self.repositories
                 )
-                .map(move |message| { AppMessage::TopbarMessage(message) }),
+                .map(AppMessage::TopbarMessage),
             main
         ];
 

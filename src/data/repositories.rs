@@ -63,3 +63,9 @@ pub struct Commit {
     message: String,
     time: u16,
 }
+
+pub struct ChangedFile {
+    pub relative_path: String,
+    pub extension: String,
+    pub name: String,
+}
