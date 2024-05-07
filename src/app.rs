@@ -65,6 +65,9 @@ impl Application for App {
         match message {
             AppMessage::SidebarMessage(sidebar_message) => {
                 println!("sidebar message {:?}", sidebar_message);
+
+                let _ = self.sidebar.update(sidebar_message).map(AppMessage::SidebarMessage);
+
                 Command::none()
             }
             AppMessage::TopbarMessage(topbar_message) => {

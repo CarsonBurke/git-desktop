@@ -1,6 +1,5 @@
 use iced::{
-    widget::{column, container, horizontal_space, row},
-    Element, Length,
+    widget::{column, container, horizontal_space, row}, Command, Element, Length
 };
 use iced_aw::BootstrapIcon;
 
@@ -8,11 +7,15 @@ use crate::{
     constants::spacings, general_widgets::icons::bootstrap_icon, styles::container::sidebar,
 };
 
-use super::{changes::{Changes, ChangesMessage}, history_and_changes::HistoryAndChanges};
+use super::{
+    changes::{Changes, ChangesMessage},
+    create_commit::{CreateCommit, CreateCommitMessage},
+    history_and_changes::HistoryAndChanges,
+};
 
 #[derive(Debug, Clone)]
 pub enum SidebarMessage {
-    TestMessage(ChangesMessage),
+    CreateCommitMessage(CreateCommitMessage),
 }
 
 pub enum DisplayState {
@@ -28,6 +31,7 @@ pub enum DisplayState {
 
 pub struct SidebarChildren {
     history_and_changes: HistoryAndChanges,
+    create_commit: CreateCommit,
 }
 
 pub struct Sidebar {
@@ -46,8 +50,17 @@ impl Sidebar {
             // },
             children: SidebarChildren {
                 history_and_changes: HistoryAndChanges::new(),
+                create_commit: CreateCommit::new(),
             },
             test_child: Changes::new(),
+        }
+    }
+
+    pub fn update(&mut self, message: SidebarMessage) -> Command<SidebarMessage> {
+        match message {
+            SidebarMessage::CreateCommitMessage(create_commit_message) => {
+                self.children.create_commit.update(create_commit_message).map(SidebarMessage::CreateCommitMessage)
+            }
         }
     }
 
@@ -58,9 +71,11 @@ impl Sidebar {
             bootstrap_icon(BootstrapIcon::Gear),
         ];
 
-        let content = column![topbar, self.test_child.view().map(move |message| {
-            SidebarMessage::TestMessage(message)
-        })].spacing(spacings::MEDIUM);
+        let content = column![
+            topbar,
+            self.children.create_commit.view().map(SidebarMessage::CreateCommitMessage),
+        ]
+        .spacing(spacings::MEDIUM);
         let container = container(content)
             .padding(spacings::SMALL)
             .height(Length::Fill)

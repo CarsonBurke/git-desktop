@@ -43,12 +43,19 @@ pub fn secondary_blended(theme: &Theme) -> widget::button::Appearance {
     }
 }
 
-pub struct Primary;
+pub struct Primary {
+    pub display_as_pressed: bool,
+}
 
 impl button::StyleSheet for Primary {
     type Style = iced::Theme;
 
-    fn active(&self, _: &Self::Style) -> button::Appearance {
+    fn active(&self, style: &Self::Style) -> button::Appearance {
+
+        if self.display_as_pressed == true {
+            return self.pressed(style);
+        }
+
         button::Appearance {
             background: Some(iced::Background::Color(custom_theme::PRIMARY)),
             text_color: iced::Color::WHITE,
