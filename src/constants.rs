@@ -1,4 +1,4 @@
-pub static ICON: &[u8] = include_bytes!("icon.png");
+pub static ICON: &[u8] = include_bytes!("images/icon.png");
 
 pub mod spacings {
     pub const XSMALL: u16 = 4;

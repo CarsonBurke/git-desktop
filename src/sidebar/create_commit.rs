@@ -1,12 +1,14 @@
 use iced::{
     alignment,
-    widget::{button, column, container, horizontal_space, row, text, text_editor, text_input},
+    widget::{
+        button, column, container, horizontal_space, image, row, text, text_editor, text_input,
+    },
     Alignment, Command, Element, Length,
 };
 use iced_aw::BootstrapIcon;
 
 use crate::{
-    constants::{font_sizes, spacings},
+    constants::{font_sizes, spacings, ICON},
     general_widgets::icons::{bootstrap_icon, dropdown_arrow},
     styles,
 };
@@ -78,9 +80,9 @@ impl CreateCommit {
                 true => {
                     column![
                         row![
-                            container(text("C"))
+                            container(image(image::Handle::from_memory(ICON)).width(20).height(20))
                                 .style(styles::container::test_background_4())
-                                .padding(spacings::SMALL),
+                                .padding(spacings::XSMALL),
                             text_input("Title", self.commit_title.as_str())
                                 .on_input(CreateCommitMessage::CommitTitleChanged)
                                 .size(font_sizes::P)
