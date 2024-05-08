@@ -68,4 +68,5 @@ pub struct ChangedFile {
     pub relative_path: String,
     pub extension: String,
     pub name: String,
+    pub diff: String,
 }

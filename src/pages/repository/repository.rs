@@ -14,6 +14,7 @@ pub enum RepositoryPageMessage {
     VersionGraphMessage(VersionGraphMessage),
 }
 
+#[derive(Debug, Clone)]
 pub struct RepositoryPage {
     test_subpage: VersionGraph,
 }
@@ -38,7 +39,6 @@ impl RepositoryPage {
         let Some(repository) = repositories.get(repository_name) else {
             return container(row![]).into()
         };
-
 
         let content = column![self
             .test_subpage

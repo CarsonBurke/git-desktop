@@ -12,6 +12,7 @@ mod styles;
 mod topbar;
 mod data;
 mod utils;
+mod preferences;
 
 pub fn main() -> iced::Result {
 

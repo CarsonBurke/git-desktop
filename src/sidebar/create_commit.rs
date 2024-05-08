@@ -67,7 +67,7 @@ impl CreateCommit {
             button(row![
                 text("Commit").size(font_sizes::H2),
                 horizontal_space(),
-                dropdown_arrow(self.expanded)
+                dropdown_arrow(self.expanded).size(font_sizes::H3)
             ])
             .style(iced::theme::Button::Custom(Box::new(
                 styles::button::Background3 {
@@ -80,14 +80,13 @@ impl CreateCommit {
                 true => {
                     column![
                         row![
-                            container(image(image::Handle::from_memory(ICON)).width(20).height(20))
-                                .style(styles::container::test_background_4())
-                                .padding(spacings::XSMALL),
-                            text_input("Title", self.commit_title.as_str())
+                            container(image(image::Handle::from_memory(ICON)).width(26).height(26)),
+                            text_input("Summary", self.commit_title.as_str())
                                 .on_input(CreateCommitMessage::CommitTitleChanged)
                                 .size(font_sizes::P)
                         ]
-                        .align_items(Alignment::Center),
+                        .align_items(Alignment::Center)
+                        .spacing(spacings::SMALL),
                         text_input("Description", self.commit_description.as_str())
                             .on_input(CreateCommitMessage::CommitDescriptionChanged)
                             .size(font_sizes::P),

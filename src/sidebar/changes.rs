@@ -65,7 +65,7 @@ impl Changes {
                         .style(styles::container::background3_rounded()),
                     text("Changes").size(font_sizes::H2),
                     horizontal_space(),
-                    dropdown_arrow(self.expanded)
+                    dropdown_arrow(self.expanded).size(font_sizes::H3)
                 ]
                 .spacing(spacings::SMALL)
                 .align_items(Alignment::Center)

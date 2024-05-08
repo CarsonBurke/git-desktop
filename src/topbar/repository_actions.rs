@@ -12,6 +12,7 @@ use crate::{
 #[derive(Debug, Clone)]
 pub enum RepositoryActionsMessage {
     FilterRepositories(String),
+    NewRepository,
 }
 
 pub struct RepositoryActions {
@@ -32,6 +33,7 @@ impl RepositoryActions {
                 
                 Command::none()
             }
+            RepositoryActionsMessage::NewRepository => Command::none(),
         }
     }
 
@@ -40,12 +42,12 @@ impl RepositoryActions {
             row![
                 text_input("Search", self.repositories_filter.as_str())
                     .width(Length::Fill)
-                    .on_input(RepositoryActionsMessage::FilterRepositories),
+                    .on_input(RepositoryActionsMessage::FilterRepositories).size(font_sizes::H3),
                 button(bootstrap_icon(BootstrapIcon::Plus)).style(iced::theme::Button::Custom(
                     Box::new(styles::button::Background4 {
                         display_as_pressed: false,
                     })
-                )),
+                )).on_press(RepositoryActionsMessage::NewRepository),
             ]
             .spacing(spacings::SMALL)
             .align_items(Alignment::Center),

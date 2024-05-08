@@ -12,17 +12,23 @@ use super::repository::{
 
 #[derive(Debug, Clone)]
 pub enum MainMessage {
+    ChangePage(MainChildPage),
     RepositoryPageMessage(RepositoryPageMessage),
 }
 
+#[derive(Debug, Clone)]
+pub enum MainChildPage {
+    RepositoryPage(RepositoryPage),
+}
+
 pub struct Main {
-    test_page: RepositoryPage,
+    page: MainChildPage,
 }
 
 impl Main {
     pub fn new() -> Self {
         Self {
-            test_page: RepositoryPage::new(),
+            page: MainChildPage::RepositoryPage(RepositoryPage::new()),
         }
     }
 
@@ -31,10 +37,12 @@ impl Main {
         repository_name: &Option<String>,
         repositories: &Repositories,
     ) -> Element<MainMessage> {
-        let content = column![self
-            .test_page
-            .view(repository_name, repositories)
-            .map(move |message| { MainMessage::RepositoryPageMessage(message) })];
+        let content = column![match &self.page {
+            MainChildPage::RepositoryPage(page) => {
+                page.view(repository_name, repositories)
+                    .map(MainMessage::RepositoryPageMessage)
+            }
+        }];
         let container = container(content);
         container.into()
     }

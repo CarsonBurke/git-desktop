@@ -118,11 +118,13 @@ impl Sidebar {
                             name: "main".to_string(),
                             extension: "rs".to_string(),
                             relative_path: "src/".to_string(),
+                            diff: "".to_string(),
                         });
                         changed_files.push(ChangedFile {
                             name: "README".to_string(),
                             extension: "txt".to_string(),
                             relative_path: "/".to_string(),
+                            diff: "".to_string(),
                         });
 
                         changed_files

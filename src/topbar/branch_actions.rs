@@ -17,6 +17,7 @@ use crate::{
 #[derive(Debug, Clone)]
 pub enum BranchActionsMessage {
     FilterBranches(String),
+    NewBranch,
 }
 
 pub struct BranchActions {
@@ -37,6 +38,9 @@ impl BranchActions {
 
                 Command::none()
             }
+            BranchActionsMessage::NewBranch => {
+                Command::none()
+            }
         }
     }
 
@@ -50,12 +54,12 @@ impl BranchActions {
                 row![
                     text_input("Search", self.branches_filter.as_str())
                         .width(Length::Fill)
-                        .on_input(BranchActionsMessage::FilterBranches),
+                        .on_input(BranchActionsMessage::FilterBranches).size(font_sizes::H3),
                     button(bootstrap_icon(BootstrapIcon::Plus)).style(iced::theme::Button::Custom(
                         Box::new(styles::button::Background4 {
                             display_as_pressed: false,
                         })
-                    )),
+                    )).on_press(BranchActionsMessage::NewBranch),
                 ]
                 .spacing(spacings::SMALL)
                 .align_items(Alignment::Center),

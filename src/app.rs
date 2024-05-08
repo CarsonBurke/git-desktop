@@ -6,13 +6,7 @@ use iced::{
 use iced_aw::split;
 
 use crate::{
-    constants::spacings,
-    data::repositories::{Repositories, Repository},
-    pages::main::{Main, MainMessage},
-    sidebar::sidebar::{Sidebar, SidebarMessage},
-    styles,
-    theme::CustomThemeChoice,
-    topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage},
+    constants::spacings, data::repositories::{Repositories, Repository}, pages::main::{Main, MainMessage}, preferences::Preferences, sidebar::sidebar::{Sidebar, SidebarMessage}, styles, theme::CustomThemeChoice, topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage}
 };
 
 #[derive(Debug, Clone)]
@@ -25,6 +19,7 @@ pub enum AppMessage {
 }
 
 pub struct App {
+    preferences: Preferences,
     sidebar: Sidebar,
     topbar: Topbar,
     main: Main,
@@ -41,6 +36,7 @@ impl Application for App {
 
     fn new(_flags: ()) -> (Self, Command<AppMessage>) {
         let mut new_self = Self {
+            preferences: Preferences::new(),
             sidebar: Sidebar::new(),
             topbar: Topbar::new(),
             main: Main::new(),

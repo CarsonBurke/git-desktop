@@ -180,7 +180,7 @@ impl Topbar {
                         ]
                         .spacing(spacings::SMALL)
                         .align_items(Alignment::Center),
-                        dropdown_arrow(self.repository_actions.is_some()),
+                        dropdown_arrow(self.repository_actions.is_some()).size(font_sizes::H2),
                     ]
                     .spacing(spacings::MEDIUM)
                     .align_items(Alignment::Center),
@@ -224,7 +224,7 @@ impl Topbar {
                         ]
                         .spacing(spacings::SMALL)
                         .align_items(Alignment::Center),
-                        dropdown_arrow(self.branch_actions.is_some()),
+                        dropdown_arrow(self.branch_actions.is_some()).size(font_sizes::H2),
                     ]
                     .spacing(spacings::MEDIUM)
                     .align_items(Alignment::Center),

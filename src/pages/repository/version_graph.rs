@@ -14,6 +14,7 @@ use crate::{
 #[derive(Debug, Clone)]
 pub enum VersionGraphMessage {}
 
+#[derive(Debug, Clone)]
 pub struct VersionGraph {}
 
 impl VersionGraph {
