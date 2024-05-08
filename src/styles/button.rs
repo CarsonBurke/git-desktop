@@ -70,7 +70,7 @@ impl button::StyleSheet for Primary {
 
     fn hovered(&self, _: &Self::Style) -> button::Appearance {
         button::Appearance {
-            background: Some(iced::Background::Color(custom_theme::PRIMARY)),
+            background: Some(iced::Background::Color(custom_theme::PRIMARY_DOWNLIGHT)),
             text_color: iced::Color::WHITE,
             shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
             border: iced::Border {
@@ -83,7 +83,7 @@ impl button::StyleSheet for Primary {
 
     fn pressed(&self, _: &Self::Style) -> button::Appearance {
         button::Appearance {
-            background: Some(iced::Background::Color(custom_theme::PRIMARY)),
+            background: Some(iced::Background::Color(custom_theme::PRIMARY_HIGHLIGHT)),
             text_color: iced::Color::WHITE,
             shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
             border: iced::Border {

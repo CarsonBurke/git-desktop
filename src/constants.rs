@@ -41,6 +41,18 @@ pub mod custom_theme {
         b: 0.89,
         a: 1.,
     };
+    pub const PRIMARY_DOWNLIGHT: Color = Color {
+        r: 0.16,
+        g: 0.47,
+        b: 0.84,
+        a: 1.,
+    };
+    pub const PRIMARY_HIGHLIGHT: Color = Color {
+        r: 0.26,
+        g: 0.57,
+        b: 0.94,
+        a: 1.,
+    };
 
     pub const BACKGROUND_1: Color = Color {
         r: 0.12,

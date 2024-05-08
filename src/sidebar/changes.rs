@@ -3,7 +3,8 @@ use iced::{
     border::Radius,
     theme,
     widget::{
-        self, button, checkbox, column, container, horizontal_space, image, row, text, toggler, Column
+        self, button, checkbox, column, container, horizontal_space, image, row, text, toggler,
+        Column,
     },
     Alignment, Background, Border, Command, Element, Length,
 };
@@ -20,7 +21,11 @@ use crate::{
         seperators::{seperator_background_1, seperator_background_2},
         split_table_single::split_table_single,
     },
-    styles::{self, container::divider_background_2}, utils::get_icon_for_file_extension,
+    styles::{
+        self,
+        container::{divider_background_2, test_background_3},
+    },
+    utils::get_icon_for_file_extension,
 };
 
 use super::sidebar::DisplayState;
@@ -79,14 +84,23 @@ impl Changes {
 
                         for changed_file in changed_files {
                             children.push(
-                                column![button(
+                                button(
                                     row![
-                                        match get_icon_for_file_extension(changed_file.extension.clone()) {
+                                        match get_icon_for_file_extension(
+                                            changed_file.extension.clone()
+                                        ) {
                                             Ok(icon) => {
-                                                container(image(image::Handle::from_memory(icon)).width(18).height(18))
+                                                container(
+                                                    image(image::Handle::from_memory(icon))
+                                                        .width(18)
+                                                        .height(18),
+                                                )
                                             }
                                             Err(_) => {
-                                                container(bootstrap_icon(BootstrapIcon::Code).size(font_sizes::H2))
+                                                container(
+                                                    bootstrap_icon(BootstrapIcon::Code)
+                                                        .size(font_sizes::H2),
+                                                )
                                             }
                                         },
                                         row![
@@ -97,47 +111,29 @@ impl Changes {
                                         ]
                                     ]
                                     .spacing(spacings::SMALL)
-                                    .align_items(Alignment::Center)
+                                    .align_items(Alignment::Center),
                                 )
                                 .style(iced::theme::Button::Custom(Box::new(
                                     styles::button::Background4 {
                                         display_as_pressed: false,
-                                    }
+                                    },
                                 )))
                                 .width(Length::Fill)
-                                .on_press(ChangesMessage::ToggleFile),]
-                                .spacing(spacings::SMALL)
-                                .padding(spacings::SMALL)
+                                .on_press(ChangesMessage::ToggleFile)
                                 .into(),
                             )
                         }
 
                         children
                     })
+                    .spacing(spacings::SMALL)
+                    .padding(spacings::SMALL)
                 }
                 false => column![],
             }
         ])
-        .style(changes_parent());
+        .style(test_background_3());
         let container = container(content);
         container.into()
-    }
-}
-
-pub fn changes_parent() -> widget::container::Appearance {
-    widget::container::Appearance {
-        background: Some(Background::from(BACKGROUND_3)),
-        border: Border {
-            radius: 8.0.into(),
-            ..Default::default()
-        },
-        ..Default::default()
-    }
-}
-
-pub fn changes_header() -> widget::container::Appearance {
-    widget::container::Appearance {
-        background: Some(Background::from(BACKGROUND_4)),
-        ..Default::default()
     }
 }
