@@ -1,3 +1,5 @@
+use std::cmp::{max, min};
+
 use iced::{
     executor, font,
     widget::{column, container, row, scrollable},
@@ -6,7 +8,14 @@ use iced::{
 use iced_aw::split;
 
 use crate::{
-    constants::spacings, data::repositories::{Repositories, Repository}, pages::main::{Main, MainMessage}, preferences::Preferences, sidebar::sidebar::{Sidebar, SidebarMessage}, styles, theme::CustomThemeChoice, topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage}
+    constants::spacings,
+    data::repositories::{Repositories, Repository},
+    pages::main::{Main, MainMessage},
+    preferences::Preferences,
+    sidebar::sidebar::{Sidebar, SidebarMessage},
+    styles,
+    theme::CustomThemeChoice,
+    topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage},
 };
 
 #[derive(Debug, Clone)]
@@ -103,7 +112,14 @@ impl Application for App {
             }
             AppMessage::DividerDragTo(drag_position) => {
                 println!("split moved {:?}", drag_position);
-                self.divider_position = Some(drag_position);
+
+                let bounded_drag_position = min(
+                    max(self.preferences.sidebar.min_width, drag_position),
+                    self.preferences.sidebar.max_width,
+                );
+
+                self.divider_position = Some(bounded_drag_position);
+
                 Command::none()
             }
         }
@@ -116,13 +132,16 @@ impl Application for App {
     fn view(&self) -> Element<AppMessage> {
         let left = column![self
             .sidebar
-            .view(self.divider_position, &self.current_repository_name, &self.repositories)
+            .view(
+                self.divider_position,
+                &self.current_repository_name,
+                &self.repositories
+            )
             .map(AppMessage::SidebarMessage)];
 
         let main_content = container(
             self.main
-                .view(&self.current_repository_name,
-                    &self.repositories)
+                .view(&self.current_repository_name, &self.repositories)
                 .map(move |message| AppMessage::MainMessage(message)),
         )
         .padding(spacings::MEDIUM)
