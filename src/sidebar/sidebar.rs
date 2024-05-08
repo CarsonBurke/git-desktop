@@ -120,6 +120,11 @@ impl Sidebar {
                             extension: "rs".to_string(),
                             relative_path: "src/".to_string(),
                         });
+                        changed_files.push(ChangedFile {
+                            name: "README".to_string(),
+                            extension: "txt".to_string(),
+                            relative_path: "/".to_string(),
+                        });
 
                         changed_files
                     })

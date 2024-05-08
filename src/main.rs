@@ -11,6 +11,7 @@ mod general_widgets;
 mod styles;
 mod topbar;
 mod data;
+mod utils;
 
 pub fn main() -> iced::Result {
 

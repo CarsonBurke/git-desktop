@@ -3,7 +3,7 @@ use iced::{
     border::Radius,
     theme,
     widget::{
-        self, button, checkbox, column, container, horizontal_space, row, text, toggler, Column,
+        self, button, checkbox, column, container, horizontal_space, image, row, text, toggler, Column
     },
     Alignment, Background, Border, Command, Element, Length,
 };
@@ -20,7 +20,7 @@ use crate::{
         seperators::{seperator_background_1, seperator_background_2},
         split_table_single::split_table_single,
     },
-    styles::{self, container::divider_background_2},
+    styles::{self, container::divider_background_2}, utils::get_icon_for_file_extension,
 };
 
 use super::sidebar::DisplayState;
@@ -81,12 +81,19 @@ impl Changes {
                             children.push(
                                 column![button(
                                     row![
-                                        bootstrap_icon(BootstrapIcon::Code).size(font_sizes::H2),
+                                        match get_icon_for_file_extension(changed_file.extension.clone()) {
+                                            Ok(icon) => {
+                                                container(image(image::Handle::from_memory(icon)).width(18).height(18))
+                                            }
+                                            Err(_) => {
+                                                container(bootstrap_icon(BootstrapIcon::Code).size(font_sizes::H2))
+                                            }
+                                        },
                                         row![
-                                            text(changed_file.relative_path)
+                                            text(changed_file.relative_path.clone())
                                                 .size(font_sizes::H2)
                                                 .style(theme::Text::Color(custom_theme::GREY_TEXT)),
-                                            text(changed_file.name).size(font_sizes::H2)
+                                            text(changed_file.name.clone()).size(font_sizes::H2)
                                         ]
                                     ]
                                     .spacing(spacings::SMALL)
@@ -108,26 +115,6 @@ impl Changes {
                         children
                     })
                 }
-                // column![
-                //     button(
-                //         row![
-                //             bootstrap_icon(BootstrapIcon::Code).size(font_sizes::H2),
-                //             text("File name").size(font_sizes::H2)
-                //         ]
-                //         .spacing(spacings::SMALL)
-                //         .padding(spacings::SMALL)
-                //         .align_items(Alignment::Center)
-                //     )
-                //     .style(iced::theme::Button::Custom(Box::new(
-                //         styles::button::Background4 {
-                //             display_as_pressed: false,
-                //         }
-                //     )))
-                //     .width(Length::Fill)
-                //     .on_press(ChangesMessage::ToggleFile),
-                // ]
-                // .spacing(spacings::SMALL)
-                // .padding(spacings::SMALL),
                 false => column![],
             }
         ])

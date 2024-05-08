@@ -1,5 +1,21 @@
 pub static ICON: &[u8] = include_bytes!("images/icon.png");
 
+pub enum LanguageIcon {
+    Rust = 5,
+}
+
+pub struct LanguageIcons {
+    pub rust: &'static [u8],
+}
+
+pub const LANGUAGE_ICONS: LanguageIcons = LanguageIcons {
+    rust: include_bytes!("images/language_icons/rust_icon.png"),
+};
+
+pub mod language_icons {
+    pub static RUST: &[u8] = include_bytes!("images/language_icons/rust_icon.png");
+}
+
 pub mod spacings {
     pub const XSMALL: u16 = 4;
     pub const SMALL: u16 = 8;
