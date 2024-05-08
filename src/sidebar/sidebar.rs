@@ -11,7 +11,6 @@ use crate::{
 use super::{
     changes::{Changes, ChangesMessage},
     create_commit::{self, CreateCommit, CreateCommitMessage},
-    history_and_changes::HistoryAndChanges,
 };
 
 #[derive(Debug, Clone)]
