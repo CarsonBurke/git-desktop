@@ -54,12 +54,19 @@ impl Application for App {
             current_repository_name: None,
         };
 
-        let repository = Repository::new();
+        let mut repository_names = Vec::new();
+        repository_names.push("Git desktop".to_string());
+        repository_names.push("cTasks".to_string());
+        repository_names.push("Garuda website angular".to_string());
 
-        new_self
-            .repositories
-            .insert("Git desktop".to_string(), repository);
-        new_self.current_repository_name = Some("Git desktop".to_string());
+        for repository_name in repository_names {
+            let repository = Repository::new();
+
+            new_self
+                .repositories
+                .insert(repository_name.clone(), repository);
+            new_self.current_repository_name = Some(repository_name.clone());
+        }
 
         (
             new_self,

@@ -27,6 +27,27 @@ impl Repository {
             },
         );
 
+        new_self.branches.insert(
+            "development".to_string(),
+            Branch {
+                commits: HashMap::new(),
+            },
+        );
+
+        new_self.branches.insert(
+            "0.1".to_string(),
+            Branch {
+                commits: HashMap::new(),
+            },
+        );
+
+        new_self.branches.insert(
+            "0.2".to_string(),
+            Branch {
+                commits: HashMap::new(),
+            },
+        );
+
         match new_self.branches.get_mut("main") {
             Some(branch) => {
                 branch.commits.insert(

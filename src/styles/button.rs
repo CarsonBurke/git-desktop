@@ -146,6 +146,57 @@ impl button::StyleSheet for Background1 {
     }
 }
 
+pub struct Background2 {
+    pub display_as_pressed: bool,
+}
+
+impl button::StyleSheet for Background2 {
+    type Style = iced::Theme;
+
+    fn active(&self, style: &Self::Style) -> button::Appearance {
+        if self.display_as_pressed == true {
+            return self.pressed(style);
+        }
+
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_1)),
+            text_color: iced::Color::WHITE,
+            // shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    fn hovered(&self, _: &Self::Style) -> button::Appearance {
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_2)),
+            text_color: iced::Color::WHITE,
+            shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    fn pressed(&self, _: &Self::Style) -> button::Appearance {
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_3)),
+            text_color: iced::Color::WHITE,
+            shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+}
+
 
 pub struct Background3 {
     pub display_as_pressed: bool,
@@ -288,7 +339,58 @@ impl button::StyleSheet for Background4 {
 
     fn pressed(&self, _: &Self::Style) -> button::Appearance {
         button::Appearance {
-            background: Some(iced::Background::Color(custom_theme::BACKGROUND_1)),
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_6)),
+            text_color: iced::Color::WHITE,
+            shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+}
+
+pub struct Background5 {
+    pub display_as_pressed: bool,
+}
+
+impl button::StyleSheet for Background5 {
+    type Style = iced::Theme;
+
+    fn active(&self, style: &Self::Style) -> button::Appearance {
+        if self.display_as_pressed == true {
+            return self.pressed(style);
+        }
+
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_5)),
+            text_color: iced::Color::WHITE,
+            // shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    fn hovered(&self, _: &Self::Style) -> button::Appearance {
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_6)),
+            text_color: iced::Color::WHITE,
+            shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
+            border: iced::Border {
+                radius: 4.0.into(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    fn pressed(&self, _: &Self::Style) -> button::Appearance {
+        button::Appearance {
+            background: Some(iced::Background::Color(custom_theme::BACKGROUND_7)),
             text_color: iced::Color::WHITE,
             shadow_offset: iced::Vector { x: 1.0, y: 1.0 },
             border: iced::Border {

@@ -9,8 +9,11 @@ use iced_aw::BootstrapIcon;
 
 use crate::{
     constants::{custom_theme, font_sizes, spacings},
-    data::repositories::Branches,
-    general_widgets::{icons::bootstrap_icon, seperators::seperator_background_2},
+    data::repositories::{Branch, Branches},
+    general_widgets::{
+        icons::{bootstrap_icon, dropdown_arrow},
+        seperators::{separator, seperator_background_1, seperator_background_2},
+    },
     styles,
 };
 
@@ -18,16 +21,20 @@ use crate::{
 pub enum BranchActionsMessage {
     FilterBranches(String),
     NewBranch,
+    SelectBranch(String),
+    ExpandAllBranches,
 }
 
 pub struct BranchActions {
     branches_filter: String,
+    all_branches_expanded: bool,
 }
 
 impl BranchActions {
     pub fn new() -> Self {
         Self {
             branches_filter: "".to_string(),
+            all_branches_expanded: true,
         }
     }
 
@@ -38,7 +45,11 @@ impl BranchActions {
 
                 Command::none()
             }
-            BranchActionsMessage::NewBranch => {
+            BranchActionsMessage::NewBranch => Command::none(),
+            BranchActionsMessage::SelectBranch(branch_name) => Command::none(),
+            BranchActionsMessage::ExpandAllBranches => {
+                self.all_branches_expanded = !self.all_branches_expanded;
+
                 Command::none()
             }
         }
@@ -46,7 +57,7 @@ impl BranchActions {
 
     pub fn view(
         &self,
-        branch_name: &Option<String>,
+        current_branch_name: &Option<String>,
         branches: &Branches,
     ) -> Element<BranchActionsMessage> {
         let content = column![
@@ -54,12 +65,15 @@ impl BranchActions {
                 row![
                     text_input("Search", self.branches_filter.as_str())
                         .width(Length::Fill)
-                        .on_input(BranchActionsMessage::FilterBranches).size(font_sizes::H3),
-                    button(bootstrap_icon(BootstrapIcon::Plus)).style(iced::theme::Button::Custom(
-                        Box::new(styles::button::Background4 {
-                            display_as_pressed: false,
-                        })
-                    )).on_press(BranchActionsMessage::NewBranch),
+                        .on_input(BranchActionsMessage::FilterBranches)
+                        .size(font_sizes::H3),
+                    button(bootstrap_icon(BootstrapIcon::Plus).size(font_sizes::H3))
+                        .style(iced::theme::Button::Custom(Box::new(
+                            styles::button::Background4 {
+                                display_as_pressed: false,
+                            }
+                        )))
+                        .on_press(BranchActionsMessage::NewBranch),
                 ]
                 .spacing(spacings::SMALL)
                 .align_items(Alignment::Center),
@@ -68,7 +82,7 @@ impl BranchActions {
                         .size(font_sizes::H3)
                         .style(theme::Text::Color(custom_theme::GREY_TEXT)),
                     text(
-                        branch_name
+                        current_branch_name
                             .clone()
                             .unwrap_or("no default branch".to_string())
                     )
@@ -77,47 +91,95 @@ impl BranchActions {
             ]
             .spacing(spacings::SMALL),
             column![
-                text("All Branches").size(font_sizes::H2),
-                Column::with_children({
-                    let mut children = Vec::new();
-                    let mut i = 0;
+                button(
+                    row![
+                        bootstrap_icon(BootstrapIcon::Alt).size(font_sizes::H2),
+                        text("All Branches").size(font_sizes::H2),
+                        horizontal_space(),
+                        dropdown_arrow(self.all_branches_expanded).size(font_sizes::H3),
+                    ]
+                    .spacing(spacings::SMALL)
+                    .align_items(Alignment::Center),
+                )
+                .style(iced::theme::Button::Custom(Box::new(
+                    styles::button::Background5 {
+                        display_as_pressed: self.all_branches_expanded,
+                    },
+                )))
+                .padding(spacings::SMALL)
+                .on_press(BranchActionsMessage::ExpandAllBranches),
+                match self.all_branches_expanded {
+                    true => {
+                        container(Column::with_children({
+                            let mut children = Vec::new();
+                            let mut i = 0;
 
-                    for (branch_name, branch) in branches {
-                        children.push(
-                            column![
-                                {
-                                    match i == 0 {
-                                        true => container(row![]),
-                                        false => seperator_background_2(),
+                            for (branch_name, branch) in branches {
+                                children.push(match i == 0 {
+                                    true => container(row![]).into(),
+                                    false => {
+                                        separator(styles::container::test_background_3()).into()
                                     }
-                                },
-                                container(row![
-                                    text(branch_name).size(font_sizes::H2),
-                                    horizontal_space(),
-                                    text("yesterday")
-                                        .size(font_sizes::H4)
-                                        .style(theme::Text::Color(custom_theme::GREY_TEXT))
-                                ].align_items(Alignment::Center))
-                                .style(styles::container::test_background_4())
-                                .width(Length::Fill)
-                                .padding(spacings::SMALL)
-                            ]
-                            .into(),
-                        );
+                                });
 
-                        i += 1;
+                                children.push(
+                                    button(
+                                        row![
+                                            (|| {
+                                                let Some(current_branch_name) = current_branch_name
+                                                else {
+                                                    return text("");
+                                                };
+
+                                                if branch_name == current_branch_name {
+                                                    return bootstrap_icon(
+                                                        BootstrapIcon::ArrowRight,
+                                                    )
+                                                    .size(font_sizes::H3);
+                                                };
+
+                                                text("")
+                                            })(),
+                                            text(branch_name).size(font_sizes::H3),
+                                            horizontal_space(),
+                                            text("yesterday")
+                                                .size(font_sizes::H4)
+                                                .style(theme::Text::Color(custom_theme::GREY_TEXT))
+                                        ]
+                                        .spacing(spacings::SMALL)
+                                        .align_items(Alignment::Center),
+                                    )
+                                    .style(iced::theme::Button::Custom(Box::new(
+                                        styles::button::Background4 {
+                                            display_as_pressed: false,
+                                        },
+                                    )))
+                                    .width(Length::Fill)
+                                    .on_press(BranchActionsMessage::SelectBranch(
+                                        branch_name.clone(),
+                                    ))
+                                    .into(),
+                                );
+
+                                i += 1;
+                            }
+
+                            children
+                        }))
+                        .padding(spacings::XSMALL)
+                        .style(styles::container::test_background_4())
                     }
-
-                    children
-                })
+                    false => {
+                        container(row![])
+                    }
+                }
             ]
-            .spacing(spacings::SMALL),
         ]
         .spacing(spacings::MEDIUM)
         .padding(spacings::SMALL);
 
         let container =
-            scrollable(container(content).style(styles::container::test_background_3()));
+            scrollable(container(content).style(styles::container::background3_rounded()));
         container.into()
     }
 }

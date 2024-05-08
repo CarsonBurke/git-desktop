@@ -194,7 +194,7 @@ impl Topbar {
                 match &self.repository_actions {
                     Some(repository_actions) => {
                         repository_actions
-                            .view()
+                            .view(repository_name.clone(), repositories)
                             .map(TopbarMessage::RepositoryActionsMessage)
                     }
                     None => {

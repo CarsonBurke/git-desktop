@@ -109,7 +109,7 @@ impl CreateCommit {
                         .width(Length::Fill),
                     ]
                     .spacing(spacings::SMALL)
-                    .padding(spacings::SMALL)
+                    .padding(spacings::XSMALL)
                 }
                 false => {
                     column![]

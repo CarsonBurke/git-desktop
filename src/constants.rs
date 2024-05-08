@@ -27,8 +27,8 @@ pub mod spacings {
 pub mod font_sizes {
     pub const H1: u16 = 16;
     pub const H2: u16 = 14;
-    pub const H3: u16 = 11;
-    pub const H4: u16 = 10;
+    pub const H3: u16 = 12;
+    pub const H4: u16 = 11;
     pub const P: u16 = 11;
 }
 
@@ -86,6 +86,20 @@ pub mod custom_theme {
         r: 0.28,
         g: 0.28,
         b: 0.28,
+        a: 1.,
+    };
+
+    pub const BACKGROUND_6: Color = Color {
+        r: 0.32,
+        g: 0.32,
+        b: 0.32,
+        a: 1.,
+    };
+
+    pub const BACKGROUND_7: Color = Color {
+        r: 0.36,
+        g: 0.36,
+        b: 0.36,
         a: 1.,
     };
 
