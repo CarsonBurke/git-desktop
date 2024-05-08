@@ -137,7 +137,6 @@ impl Changes {
 
                         children
                     })
-                    .spacing(spacings::XSMALL)
                     .padding(spacings::XSMALL)
                 }
                 false => column![],

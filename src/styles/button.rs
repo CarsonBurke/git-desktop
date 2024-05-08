@@ -53,7 +53,7 @@ impl button::StyleSheet for Primary {
     fn active(&self, style: &Self::Style) -> button::Appearance {
 
         if self.display_as_pressed == true {
-            return self.pressed(style);
+            return self.hovered(style);
         }
 
         button::Appearance {
@@ -104,7 +104,7 @@ impl button::StyleSheet for Background1 {
 
     fn active(&self, style: &Self::Style) -> button::Appearance {
         if self.display_as_pressed == true {
-            return self.pressed(style);
+            return self.hovered(style);
         }
 
         button::Appearance {
@@ -155,7 +155,7 @@ impl button::StyleSheet for Background2 {
 
     fn active(&self, style: &Self::Style) -> button::Appearance {
         if self.display_as_pressed == true {
-            return self.pressed(style);
+            return self.hovered(style);
         }
 
         button::Appearance {
@@ -207,7 +207,7 @@ impl button::StyleSheet for Background3 {
 
     fn active(&self, style: &Self::Style) -> button::Appearance {
         if self.display_as_pressed == true {
-            return self.pressed(style);
+            return self.hovered(style);
         }
 
         button::Appearance {
@@ -258,7 +258,7 @@ impl button::StyleSheet for Background3Circle {
 
     fn active(&self, style: &Self::Style) -> button::Appearance {
         if self.display_as_pressed == true {
-            return self.pressed(style);
+            return self.hovered(style);
         }
 
         button::Appearance {
@@ -309,7 +309,7 @@ impl button::StyleSheet for Background4 {
 
     fn active(&self, style: &Self::Style) -> button::Appearance {
         if self.display_as_pressed == true {
-            return self.pressed(style);
+            return self.hovered(style);
         }
 
         button::Appearance {
@@ -360,7 +360,7 @@ impl button::StyleSheet for Background5 {
 
     fn active(&self, style: &Self::Style) -> button::Appearance {
         if self.display_as_pressed == true {
-            return self.pressed(style);
+            return self.hovered(style);
         }
 
         button::Appearance {
