@@ -82,7 +82,16 @@ impl Changes {
                     Column::with_children({
                         let mut children = Vec::new();
 
+                        let mut index = 0;
+
                         for changed_file in changed_files {
+                            match index {
+                                0 => {}
+                                _ => {
+                                    children.push(seperator_background_2().into());
+                                }
+                            };
+
                             children.push(
                                 button(
                                     row![
@@ -114,19 +123,21 @@ impl Changes {
                                     .align_items(Alignment::Center),
                                 )
                                 .style(iced::theme::Button::Custom(Box::new(
-                                    styles::button::Background4 {
+                                    styles::button::Background3 {
                                         display_as_pressed: false,
                                     },
                                 )))
                                 .width(Length::Fill)
                                 .on_press(ChangesMessage::ToggleFile)
                                 .into(),
-                            )
+                            );
+
+                            index += 1;
                         }
 
                         children
                     })
-                    .spacing(spacings::SMALL)
+                    .spacing(spacings::XSMALL)
                     .padding(spacings::SMALL)
                 }
                 false => column![],

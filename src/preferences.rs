@@ -1,4 +1,4 @@
-use iced::{widget::{column, container}, Element};
+use iced::{widget::{column, container}, window, Element};
 
 #[derive(Debug, Clone)]
 pub enum PreferencesMessage {
