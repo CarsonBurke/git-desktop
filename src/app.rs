@@ -125,7 +125,8 @@ impl Application for App {
 
         let main_content = container(
             self.main
-                .view()
+                .view(&self.current_repository_name,
+                    &self.repositories)
                 .map(move |message| AppMessage::MainMessage(message)),
         )
         .padding(spacings::MEDIUM)

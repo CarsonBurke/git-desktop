@@ -5,12 +5,10 @@ use iced::{
 use iced_aw::BootstrapIcon;
 
 use crate::{
-    constants::spacings,
-    general_widgets::icons::bootstrap_icon,
-    styles::{
+    constants::spacings, data::repositories::Branches, general_widgets::icons::bootstrap_icon, styles::{
         self,
         container::{rounded_corners, test_background_2, test_background_3},
-    },
+    }
 };
 
 #[derive(Debug, Clone)]
@@ -23,16 +21,16 @@ impl VersionGraph {
         Self {}
     }
 
-    pub fn view(&self) -> Element<VersionGraphMessage> {
+    pub fn view(&self, current_branch: String, branches: &Branches) -> Element<VersionGraphMessage> {
         let top = container(
-            row![bootstrap_icon(BootstrapIcon::Code), text("Branch name"), horizontal_space(), bootstrap_icon(BootstrapIcon::Sliders)]
+            row![bootstrap_icon(BootstrapIcon::Alt), text("Version graph"), horizontal_space(), bootstrap_icon(BootstrapIcon::Sliders)]
                 .padding(spacings::SMALL)
                 .spacing(spacings::SMALL),
         )
         .style(styles::container::test_background_3())
         .width(Length::Fill);
 
-        let main = container(row!["content"])
+        let main = container(row!["graph", text(format!("graph {}", current_branch))])
             .style(test_background_2())
             .padding(spacings::SMALL)
             .width(Length::Fill)
