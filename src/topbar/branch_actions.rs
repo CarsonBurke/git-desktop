@@ -60,6 +60,14 @@ impl BranchActions {
         current_branch_name: &Option<String>,
         branches: &Branches,
     ) -> Element<BranchActionsMessage> {
+
+        let filtered_branches: Vec<(&String, &Branch)> = branches
+        .iter()
+        .filter(|(repository_name, _)| {
+            repository_name.contains(self.branches_filter.as_str())
+        })
+        .collect();
+
         let content = column![
             column![
                 row![
@@ -114,7 +122,7 @@ impl BranchActions {
                             let mut children = Vec::new();
                             let mut i = 0;
 
-                            for (branch_name, branch) in branches {
+                            for (branch_name, branch) in &filtered_branches {
                                 children.push(match i == 0 {
                                     true => container(row![]).into(),
                                     false => {
@@ -131,7 +139,7 @@ impl BranchActions {
                                                     return text("");
                                                 };
 
-                                                if branch_name == current_branch_name {
+                                                if branch_name == &current_branch_name {
                                                     return bootstrap_icon(
                                                         BootstrapIcon::ArrowRight,
                                                     )
@@ -156,7 +164,7 @@ impl BranchActions {
                                     )))
                                     .width(Length::Fill)
                                     .on_press(BranchActionsMessage::SelectBranch(
-                                        branch_name.clone(),
+                                        branch_name.to_string(),
                                     ))
                                     .into(),
                                 );
