@@ -23,11 +23,13 @@ pub enum RepositoryActionsMessage {
     NewRepository,
     SelectRepository(String),
     ExpandRecent,
+    ExpandUser,
 }
 
 pub struct RepositoryActions {
     repositories_filter: String,
     recent_expanded: bool,
+    user_expanded: bool,
 }
 
 impl RepositoryActions {
@@ -35,6 +37,7 @@ impl RepositoryActions {
         Self {
             repositories_filter: String::new(),
             recent_expanded: true,
+            user_expanded: false,
         }
     }
 
@@ -52,6 +55,11 @@ impl RepositoryActions {
             RepositoryActionsMessage::SelectRepository(repository_name) => Command::none(),
             RepositoryActionsMessage::ExpandRecent => {
                 self.recent_expanded = !self.recent_expanded;
+
+                Command::none()
+            }
+            RepositoryActionsMessage::ExpandUser => {
+                self.user_expanded = !self.user_expanded;
 
                 Command::none()
             }
@@ -91,7 +99,7 @@ impl RepositoryActions {
                     .align_items(Alignment::Center),
                 )
                 .style(iced::theme::Button::Custom(Box::new(
-                    styles::button::Background5 {
+                    styles::button::Background4 {
                         display_as_pressed: self.recent_expanded,
                     },
                 )))
@@ -117,9 +125,6 @@ impl RepositoryActions {
                                         button(
                                             row![
                                                 (|| {
-                                                    // let Some(current_repository_name) = current_repository_name else {
-                                                    //     return text("");
-                                                    // };
 
                                                     if repository_name == &current_repository_name {
                                                         return bootstrap_icon(
@@ -167,47 +172,89 @@ impl RepositoryActions {
                 }
             ],
             column![
-                row![
-                    bootstrap_icon(BootstrapIcon::Person),
-                    text("Carson Burke").size(font_sizes::H2)
-                ]
-                .spacing(spacings::SMALL)
-                .align_items(Alignment::Center),
-                column![
-                    container(
-                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                            .spacing(spacings::SMALL)
-                    )
-                    .style(styles::container::test_background_4())
-                    .padding(spacings::SMALL)
-                    .width(Length::Fill),
-                    seperator_background_2(),
-                    container(
-                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                            .spacing(spacings::SMALL)
-                    )
-                    .style(styles::container::test_background_4())
-                    .padding(spacings::SMALL)
-                    .width(Length::Fill),
-                    seperator_background_2(),
-                    container(
-                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                            .spacing(spacings::SMALL)
-                    )
-                    .style(styles::container::test_background_4())
-                    .padding(spacings::SMALL)
-                    .width(Length::Fill),
-                    seperator_background_2(),
-                    container(
-                        row![bootstrap_icon(BootstrapIcon::Book), "Repository"]
-                            .spacing(spacings::SMALL)
-                    )
-                    .style(styles::container::test_background_4())
-                    .padding(spacings::SMALL)
-                    .width(Length::Fill),
-                ],
-            ]
-            .spacing(spacings::SMALL)
+                button(
+                    row![
+                        bootstrap_icon(BootstrapIcon::Person).size(font_sizes::H2),
+                        text("Carson Burke").size(font_sizes::H2),
+                        horizontal_space(),
+                        dropdown_arrow(self.user_expanded).size(font_sizes::H3),
+                    ]
+                    .spacing(spacings::SMALL)
+                    .align_items(Alignment::Center),
+                )
+                .style(iced::theme::Button::Custom(Box::new(
+                    styles::button::Background4 {
+                        display_as_pressed: self.user_expanded,
+                    },
+                )))
+                .padding(spacings::SMALL)
+                .on_press(RepositoryActionsMessage::ExpandUser),
+                match self.user_expanded {
+                    true => {
+                        container(
+                            Column::with_children({
+                                let mut children = Vec::new();
+                                let mut i = 0;
+
+                                for (repository_name, repository) in repositories {
+
+                                    children.push(match i == 0 {
+                                        true => container(row![]).into(),
+                                        false => {
+                                            separator(styles::container::test_background_3()).into()
+                                        }
+                                    });
+
+                                    children.push(
+                                        button(
+                                            row![
+                                                (|| {
+
+                                                    if repository_name == &current_repository_name {
+                                                        return bootstrap_icon(
+                                                            BootstrapIcon::ArrowRight,
+                                                        )
+                                                        .size(font_sizes::H3);
+                                                    };
+
+                                                    text("")
+                                                })(
+                                                ),
+                                                text(repository_name).size(font_sizes::H3),
+                                                horizontal_space(),
+                                                text("•").size(font_sizes::H3).style(
+                                                    theme::Text::Color(custom_theme::GREY_TEXT)
+                                                )
+                                            ]
+                                            .spacing(spacings::SMALL)
+                                            .align_items(Alignment::Center),
+                                        )
+                                        .style(iced::theme::Button::Custom(Box::new(
+                                            styles::button::Background4 {
+                                                display_as_pressed: false,
+                                            },
+                                        )))
+                                        .width(Length::Fill)
+                                        .on_press(RepositoryActionsMessage::SelectRepository(
+                                            repository_name.clone(),
+                                        ))
+                                        .into(),
+                                    );
+
+                                    i += 1;
+                                }
+
+                                children
+                            })
+                        )
+                        .padding(spacings::XSMALL)
+                        .style(styles::container::test_background_4())
+                    }
+                    false => {
+                        container(column![])
+                    }
+                }
+            ],
         ]
         .spacing(spacings::MEDIUM)
         .padding(spacings::SMALL);

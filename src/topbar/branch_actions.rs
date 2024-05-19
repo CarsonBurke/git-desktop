@@ -102,7 +102,7 @@ impl BranchActions {
                     .align_items(Alignment::Center),
                 )
                 .style(iced::theme::Button::Custom(Box::new(
-                    styles::button::Background5 {
+                    styles::button::Background4 {
                         display_as_pressed: self.all_branches_expanded,
                     },
                 )))
