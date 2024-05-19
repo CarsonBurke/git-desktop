@@ -41,7 +41,7 @@ impl BranchActions {
     pub fn update(&mut self, message: BranchActionsMessage) -> Command<BranchActionsMessage> {
         match message {
             BranchActionsMessage::FilterBranches(branches_filter) => {
-                self.branches_filter = branches_filter;
+                self.branches_filter = branches_filter.to_lowercase();
 
                 Command::none()
             }
@@ -64,7 +64,7 @@ impl BranchActions {
         let filtered_branches: Vec<(&String, &Branch)> = branches
         .iter()
         .filter(|(repository_name, _)| {
-            repository_name.contains(self.branches_filter.as_str())
+            repository_name.to_lowercase().contains(self.branches_filter.as_str())
         })
         .collect();
 

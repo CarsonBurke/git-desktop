@@ -47,7 +47,7 @@ impl RepositoryActions {
     ) -> Command<RepositoryActionsMessage> {
         match message {
             RepositoryActionsMessage::FilterRepositories(repositories_filter) => {
-                self.repositories_filter = repositories_filter;
+                self.repositories_filter = repositories_filter.to_lowercase();
 
                 Command::none()
             }
@@ -71,11 +71,11 @@ impl RepositoryActions {
         current_repository_name: String,
         repositories: &Repositories,
     ) -> Element<RepositoryActionsMessage> {
-        
+
         let filtered_repositories: Vec<(&String, &Repository)> = repositories
             .iter()
             .filter(|(repository_name, _)| {
-                repository_name.contains(self.repositories_filter.as_str())
+                repository_name.to_lowercase().contains(self.repositories_filter.as_str())
             })
             .collect();
 
