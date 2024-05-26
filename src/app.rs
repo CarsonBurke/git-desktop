@@ -10,9 +10,15 @@ use iced_aw::split;
 use crate::{
     constants::spacings,
     data::repositories::{Repositories, Repository},
-    pages::main::{Main, MainMessage},
+    pages::{
+        main::{Main, MainChildPage, MainMessage},
+        repository::repository::RepositoryPageMessage,
+    },
     preferences::Preferences,
-    sidebar::sidebar::{Sidebar, SidebarMessage},
+    sidebar::{
+        changes::ChangesMessage,
+        sidebar::{Sidebar, SidebarMessage},
+    },
     styles,
     theme::CustomThemeChoice,
     topbar::topbar::{Topbar, TopbarGitAction, TopbarMessage},
@@ -87,8 +93,22 @@ impl Application for App {
 
                 let _ = self
                     .sidebar
-                    .update(sidebar_message)
+                    .update(sidebar_message.clone())
                     .map(AppMessage::SidebarMessage);
+
+                let command = match sidebar_message {
+                    SidebarMessage::ChangesMessage(changes_message) => match changes_message {
+                        ChangesMessage::ToggleFile(relative_path) => match self.main.page {
+                            MainChildPage::RepositoryPage(ref mut repository_page) => {
+                                repository_page
+                                    .update(RepositoryPageMessage::ShowFile(relative_path.clone()));
+                            }
+                            _ => {}
+                        },
+                        _ => {}
+                    },
+                    _ => {}
+                };
 
                 Command::none()
             }

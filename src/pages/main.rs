@@ -21,8 +21,9 @@ pub enum MainChildPage {
     RepositoryPage(RepositoryPage),
 }
 
+#[derive(Debug, Clone)]
 pub struct Main {
-    page: MainChildPage,
+    pub page: MainChildPage,
 }
 
 impl Main {

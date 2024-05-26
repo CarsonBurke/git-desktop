@@ -26,6 +26,7 @@ pub enum RepositoryActionsMessage {
     ExpandUser,
 }
 
+#[derive(Debug, Clone)]
 pub struct RepositoryActions {
     repositories_filter: String,
     recent_expanded: bool,

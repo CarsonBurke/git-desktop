@@ -5,11 +5,13 @@ pub enum PreferencesMessage {
 
 }
 
+#[derive(Debug, Clone)]
 pub struct SidebarPreferences {
     pub min_width: u16,
     pub max_width: u16,
 }
 
+#[derive(Debug, Clone)]
 pub struct Preferences {
     pub sidebar: SidebarPreferences,
 }

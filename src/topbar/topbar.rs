@@ -38,6 +38,7 @@ pub enum TopbarMessage {
     BranchActionsMessage(BranchActionsMessage),
 }
 
+#[derive(Debug, Clone)]
 pub struct Topbar {
     repository_actions: Option<RepositoryActions>,
     branch_actions: Option<BranchActions>,

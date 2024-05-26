@@ -33,7 +33,7 @@ use super::sidebar::DisplayState;
 #[derive(Debug, Clone)]
 pub enum ChangesMessage {
     ToggleExpanded,
-    ToggleFile,
+    ToggleFile(String),
 }
 
 pub struct Changes {
@@ -52,7 +52,7 @@ impl Changes {
 
                 Command::none()
             }
-            ChangesMessage::ToggleFile => Command::none(),
+            ChangesMessage::ToggleFile(relative_path) => Command::none(),
         }
     }
 
@@ -128,7 +128,7 @@ impl Changes {
                                     },
                                 )))
                                 .width(Length::Fill)
-                                .on_press(ChangesMessage::ToggleFile)
+                                .on_press(ChangesMessage::ToggleFile(changed_file.relative_path))
                                 .into(),
                             );
 

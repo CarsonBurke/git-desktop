@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+
 pub type Repositories = HashMap<String, Repository>;
 
 pub struct Repository {
@@ -8,6 +9,7 @@ pub struct Repository {
     pub url: String,
     pub provider: GitProvider,
     pub file_path: String,
+    pub inner: git2::Repository,
 }
 
 impl Repository {
@@ -18,6 +20,7 @@ impl Repository {
             url: "https://github.com/".to_string(),
             provider: GitProvider::GitHub,
             file_path: "/home/marvintmb/Documents/GitHub/git-desktop/".to_string(),
+            inner: git2::Repository::open("/home/marvintmb/Documents/GitHub/git-desktop/").unwrap(),
         };
 
         new_self.branches.insert(

@@ -25,6 +25,7 @@ pub enum BranchActionsMessage {
     ExpandAllBranches,
 }
 
+#[derive(Debug, Clone)]
 pub struct BranchActions {
     branches_filter: String,
     all_branches_expanded: bool,
