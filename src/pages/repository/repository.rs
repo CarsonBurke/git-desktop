@@ -79,7 +79,7 @@ impl RepositoryPage {
                 )
             }
             Subpage::File(file) => {
-                container(file.view().map(RepositoryPageMessage::FileMessage))
+                container(file.view(repository_name, repository).map(RepositoryPageMessage::FileMessage))
             }
         }];
         let container = container(content);

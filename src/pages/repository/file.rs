@@ -2,11 +2,10 @@ use iced::{
     theme, widget::{column, container, horizontal_space, row, text, text_editor}, Element
 };
 use iced_aw::BootstrapIcon;
+use std::fs;
 
 use crate::{
-    constants::{font_sizes, spacings},
-    general_widgets::icons::bootstrap_icon,
-    styles,
+    constants::{font_sizes, spacings}, data::repositories::Repository, general_widgets::icons::bootstrap_icon, styles
 };
 
 #[derive(Debug, Clone)]
@@ -19,13 +18,10 @@ struct TextEditorContent(text_editor::Content);
 
 impl TextEditorContent {
     pub fn new() -> Self {
-        TextEditorContent(text_editor::Content::with_text(
-            "test / test
-        test test
-        
-        
-        test test",
-        ))
+
+        let text = fs::read_to_string("text.rs".to_string()).unwrap();
+
+        TextEditorContent(text_editor::Content::with_text(text.as_str()))
     }
 }
 
@@ -49,7 +45,8 @@ impl File {
         }
     }
 
-    pub fn view(&self) -> Element<FileMessage> {
+    pub fn view(&self, repository_name: &str, repository: &Repository) -> Element<FileMessage> {
+
         let top = container(
             row![
                 bootstrap_icon(BootstrapIcon::Postage),

@@ -19,7 +19,7 @@ impl Repository {
             current_branch: Some("main".to_string()),
             url: "https://github.com/".to_string(),
             provider: GitProvider::GitHub,
-            file_path: "/home/marvintmb/Documents/GitHub/git-desktop/".to_string(),
+            file_path: "text.rs".to_string()/* "/home/marvintmb/Documents/GitHub/git-desktop/".to_string() */,
             inner: git2::Repository::open("/home/marvintmb/Documents/GitHub/git-desktop/").unwrap(),
         };
 
