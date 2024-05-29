@@ -2,7 +2,7 @@ use iced::{
     theme, widget::{column, container, horizontal_space, row, text, text_editor}, Element
 };
 use iced_aw::BootstrapIcon;
-use std::fs;
+use std::{env, fs, path::PathBuf};
 
 use crate::{
     constants::{font_sizes, spacings}, data::repositories::Repository, general_widgets::icons::bootstrap_icon, styles
@@ -19,7 +19,8 @@ struct TextEditorContent(text_editor::Content);
 impl TextEditorContent {
     pub fn new() -> Self {
 
-        let text = fs::read_to_string("text.rs".to_string()).unwrap();
+        let path_str = "/home/marvintmb/Documents/GitHub/git-desktop/text.rs";
+        let text = fs::read_to_string(path_str.to_string()).unwrap();
 
         TextEditorContent(text_editor::Content::with_text(text.as_str()))
     }
